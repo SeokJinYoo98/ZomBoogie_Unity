@@ -16,9 +16,11 @@ public class Weapon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Rotate(mAngle);
+
         if (mOwner.IsFlipX())
         {
-            if(!mSpriteRenderer.flipX)
+            if (!mSpriteRenderer.flipX)
             {
                 mSpriteRenderer.flipX = true;
                 mPosX = -0.12f;
@@ -31,13 +33,13 @@ public class Weapon : MonoBehaviour
                 mSpriteRenderer.flipX = false;
                 mPosX = 0.12f;
             }
-            
+
         }
         transform.localPosition = new Vector3(mPosX, -0.07f, 0.0f);
     }
     private void FixedUpdate()
     {
-        Rotate(mAngle);
+
     }
     void Rotate(float angle)
     {

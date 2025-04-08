@@ -133,7 +133,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: d5084d71012b29344a51d67626f3717c, type: 2}
+  m_Motion: {fileID: 0}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -150,13 +150,13 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: -1496757461406840347}
-    m_Position: {x: -150, y: 300, z: 0}
+    m_Position: {x: -150, y: 240, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5345513799174969972}
-    m_Position: {x: 210, y: 170, z: 0}
+    m_Position: {x: -280, y: 350, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 858571791599262969}
-    m_Position: {x: 210, y: 210, z: 0}
+    m_Position: {x: 0, y: 350, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions:
@@ -164,8 +164,8 @@ AnimatorStateMachine:
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: 150, y: 80, z: 0}
-  m_EntryPosition: {x: -360, y: 310, z: 0}
-  m_ExitPosition: {x: 520, y: 220, z: 0}
+  m_EntryPosition: {x: -130, y: 170, z: 0}
+  m_ExitPosition: {x: -130, y: 500, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: -1496757461406840347}
 --- !u!91 &9100000
@@ -174,7 +174,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Boogie
+  m_Name: Anim_Boogie
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: WalkBackward

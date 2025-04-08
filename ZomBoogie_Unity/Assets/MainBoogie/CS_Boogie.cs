@@ -46,8 +46,6 @@ public class Boogie : MonoBehaviour
     {
         if (mState.IsDirtyState())
         {
-            Debug.Log("Dirty");
-            Debug.Log(mState.mPrevState + " " + mState.mCurrState);
             mAnim.SetBool(mState.mPrevState, false);
             mAnim.SetBool(mState.mCurrState, true);
         }

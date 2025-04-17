@@ -7,7 +7,6 @@ public class BackGround : MonoBehaviour
 {
     [SerializeField] private Transform      mTargetTransform;
     [SerializeField] private Grid           mBackGroundGrid;
-    
     private List<GameObject>                mTilemapObjs;
 
     private int                             mTileCount;
@@ -19,13 +18,10 @@ public class BackGround : MonoBehaviour
     private void Awake()
     {
         mTilemapObjs = new List<GameObject>();
-    }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        mTileCount      =   30;
-        mScrollOffset   =   Vector3.zero;
-        mPrevPos        =   mTargetTransform.position;
+
+        mTileCount = 30;
+        mScrollOffset = Vector3.zero;
+        mPrevPos = mTargetTransform.position;
 
         TileGenerator tileGen = gameObject.GetComponent<TileGenerator>();
 
@@ -42,9 +38,9 @@ public class BackGround : MonoBehaviour
         mTilemapObjs.Add(tileGen.GenTilemapObj(mTileCount, "Layer8", gridTransform));
         mTilemapObjs.Add(tileGen.GenTilemapObj(mTileCount, "Layer9", gridTransform));
 
-        mTilemapObjs[0].transform.position = new Vector3(+0,            +0,         +0);
-        mTilemapObjs[1].transform.position = new Vector3(-mTileCount,   +0,         +0);
-        mTilemapObjs[2].transform.position = new Vector3(+mTileCount,   +0,         +0);
+        mTilemapObjs[0].transform.position = new Vector3(+0,            +0,             +0);
+        mTilemapObjs[1].transform.position = new Vector3(-mTileCount,   +0,             +0);
+        mTilemapObjs[2].transform.position = new Vector3(+mTileCount,   +0,             +0);
 
         mTilemapObjs[3].transform.position = new Vector3(+0,            +mTileCount,    +0);
         mTilemapObjs[4].transform.position = new Vector3(-mTileCount,   +mTileCount,    +0);
@@ -56,6 +52,11 @@ public class BackGround : MonoBehaviour
 
         mMinVector = new Vector2(-mTileCount, -mTileCount);
         mMaxVector = new Vector2(+mTileCount, +mTileCount);
+    }
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+
     }
 
     private void FixedUpdate()

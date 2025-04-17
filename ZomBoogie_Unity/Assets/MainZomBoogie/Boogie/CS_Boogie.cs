@@ -4,20 +4,22 @@ using Unity.VisualScripting;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 // gameObject는 현재 스크립트가 붙어 있는 오브젝트 그 자체를 가리키는 참조
 public class Boogie : MonoBehaviour
 {
-    [SerializeField] private BoogieStatus   mStatus;
+    [SerializeField] private BoogieStaus    mStatus;
     [SerializeField] private Animator       mAnim;
     [SerializeField] private Rigidbody2D    mRigidBody;
     [SerializeField] private SpriteRenderer mSpriteRenderer;
     [SerializeField] private Weapon         mCurrWeapon;
     private Vector2                         mMoveDirection = Vector2.zero;
-    private BoogieStates                    mState;
+    private BaseStates                      mState;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        mState = new BaseStates();
         mAnim.SetBool("Idle", true);
         mState.SetState("Idle");
     }
@@ -37,10 +39,12 @@ public class Boogie : MonoBehaviour
     {
         mMoveDirection = Vector2.zero;
 
-        if (Input.GetKey(KeyCode.A)) mMoveDirection += Vector2.left;
-        if (Input.GetKey(KeyCode.D)) mMoveDirection += Vector2.right;
-        if (Input.GetKey(KeyCode.S)) mMoveDirection += Vector2.down;
-        if (Input.GetKey(KeyCode.W)) mMoveDirection += Vector2.up;
+        if (Input.GetKey(KeyCode.A))        mMoveDirection += Vector2.left;
+        if (Input.GetKey(KeyCode.D))        mMoveDirection += Vector2.right;
+        if (Input.GetKey(KeyCode.S))        mMoveDirection += Vector2.down;
+        if (Input.GetKey(KeyCode.W))        mMoveDirection += Vector2.up;
+        if (Input.GetMouseButtonDown(0))    mCurrWeapon?.Attack();
+        
     }
     private void AnimateProcess()
     {
@@ -52,20 +56,7 @@ public class Boogie : MonoBehaviour
     }
     private void StateProcess(Vector3 targetPos)
     {
-        if (mRigidBody.position.x <= targetPos.x)
-        {
-            if (mSpriteRenderer.flipX)
-            {
-                mSpriteRenderer.flipX = false;
-            }
-        }
-        else
-        {
-            if (!mSpriteRenderer.flipX)
-            {
-                mSpriteRenderer.flipX = true;
-            }
-        }
+        mSpriteRenderer.flipX = (mRigidBody.position.x > targetPos.x);
 
         if (mMoveDirection.sqrMagnitude <= 0.001f)
         {
@@ -73,37 +64,17 @@ public class Boogie : MonoBehaviour
         }
         else
         {
-            if (mMoveDirection.x < 0.00f)
-            {
-                if (mSpriteRenderer.flipX)
-                    mState.SetState("WalkForward");
-                else
-                    mState.SetState("WalkBackward");
-            }
-            else
-            {
-                if (mSpriteRenderer.flipX)
-                    mState.SetState("WalkBackward");
-                else
-                    mState.SetState("WalkForward");
-            }
+            bool isForward = 
+                (mMoveDirection.x < 0f && mSpriteRenderer.flipX)
+                || 
+                (mMoveDirection.x >= 0f && !mSpriteRenderer.flipX);
+
+            mState.SetState(isForward ? "WalkForward" : "WalkBackward");
         }
-        if (mCurrWeapon)
-        {
-            mCurrWeapon.LookAt(targetPos);
-        }
+        mCurrWeapon?.LookAt(targetPos, mSpriteRenderer.flipX);
     }
     private void Move()
     {
-        mRigidBody.MovePosition(mRigidBody.position + mMoveDirection * mStatus.mSpeed * Time.fixedDeltaTime);
-    }
-
-    public bool IsIdleState()
-    {
-        return !mAnim.GetBool("isMove");
-    }
-    public bool IsFlipX()
-    {
-        return mSpriteRenderer.flipX;
+        mRigidBody.linearVelocity = mMoveDirection * mStatus.mSpeed;
     }
 }

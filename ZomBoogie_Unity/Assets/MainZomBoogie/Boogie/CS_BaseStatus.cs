@@ -2,15 +2,23 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Numerics;
 
+
+
 [System.Serializable]
-public class BoogieStatus
+public class BaseStatus
 {
     public float mHealth;
     public float mAttack;
     public float mSpeed;
 }
-
-public struct BoogieStates
+[System.Serializable]
+public class BoogieStaus : BaseStatus
+{
+    public float mAttackCoolTime;
+    public float mAttackRange;
+    public float mItemRange;
+}
+public class BaseStates
 {
     public bool IsDirtyState()
     {

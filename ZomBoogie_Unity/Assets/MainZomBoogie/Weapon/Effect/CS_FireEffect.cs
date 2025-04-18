@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Audio;
 
-public class CS_FireEffect : MonoBehaviour
+public class FireEffect : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer     mEffectRenderer;
     [SerializeField] private AudioSource        mFireAuido;

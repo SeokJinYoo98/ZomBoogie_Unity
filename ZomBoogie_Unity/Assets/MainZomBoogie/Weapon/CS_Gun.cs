@@ -5,11 +5,11 @@ public class Weapon : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer mSpriteRenderer;
     [SerializeField] private Transform      mFireTrasnform;
-    private CS_FireEffect                   mFireEffect;
+    private FireEffect                      mFireEffect;
     private float mAngle;
     private void Awake()
     {
-        mFireEffect = GetComponentInChildren<CS_FireEffect>();   
+        mFireEffect = GetComponentInChildren<FireEffect>();   
     }
 
     private void Start()
@@ -39,9 +39,19 @@ public class Weapon : MonoBehaviour
             mFireEffect.FlipX(flipX);
         }
     }
-    public void Attack()
+    public void Fire()
     {
-        Debug.Log(transform.forward);
         mFireEffect?.Play();
+        var bulletObj = BulletPool.gInstance.GetBullet();
+        bulletObj.transform.position = mFireTrasnform.transform.position;
+        bulletObj.transform.rotation = transform.rotation;
+        Vector2 dir = transform.rotation * (mSpriteRenderer.flipX ? Vector2.left : Vector2.right);
+        var bulletInfo = new Bullet.BulletInfo(
+                dir,
+                2.0f,
+                5.0f,
+                1,
+                false);
+        bulletObj.GetComponent<Bullet>().Init(bulletInfo);
     }
 }

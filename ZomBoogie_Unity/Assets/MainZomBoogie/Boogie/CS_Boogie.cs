@@ -43,7 +43,7 @@ public class Boogie : MonoBehaviour
         if (Input.GetKey(KeyCode.D))        mMoveDirection += Vector2.right;
         if (Input.GetKey(KeyCode.S))        mMoveDirection += Vector2.down;
         if (Input.GetKey(KeyCode.W))        mMoveDirection += Vector2.up;
-        if (Input.GetMouseButtonDown(0))    mCurrWeapon?.Attack();
+        if (Input.GetMouseButtonDown(0))    mCurrWeapon?.Fire();
         
     }
     private void AnimateProcess()

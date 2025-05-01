@@ -825,6 +825,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1849094087}
   - component: {fileID: 1849094088}
+  - component: {fileID: 1849094089}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -861,6 +862,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mBulletPrefab: {fileID: 255809179139902717, guid: 9bb21b10a6e693347a2f9a2e3220f383, type: 3}
   mPoolSize: 30
+--- !u!114 &1849094089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1849094086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da4ee31c87aa70a47b1baaddaa6c9234, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mEnemyPrefabs:
+  - {fileID: 2228708822467877996, guid: 823c9e3f8dbcc264fa6edb4469988ec8, type: 3}
+  mEnemyDatas:
+  - {fileID: 11400000, guid: 3fac8ec36ca41304282ef40b679f3e1a, type: 2}
+  - {fileID: 11400000, guid: 0d101188d13f46543956e62bc18213b8, type: 2}
+  - {fileID: 11400000, guid: 68a5f780152479a419be62cd7468963c, type: 2}
+  - {fileID: 11400000, guid: 715d7303bf2f139449aa5b1bf403cc32, type: 2}
+  EnemyIndex: 3
 --- !u!1 &2110493352
 GameObject:
   m_ObjectHideFlags: 0

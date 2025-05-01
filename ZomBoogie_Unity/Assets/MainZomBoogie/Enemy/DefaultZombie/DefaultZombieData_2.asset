@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffc4370751c71dd41b3da620fdf9d06e, type: 3}
+  m_Name: DefaultZombieData_2
+  m_EditorClassIdentifier: 
+  Idle:
+    frames:
+    - {fileID: 9162530753608919383, guid: 3cb2fc03e35d6ee46a2c71f3fb26b90f, type: 3}
+    frameTime: 2
+  Attack:
+    frames:
+    - {fileID: -3783279149723336894, guid: 3cb2fc03e35d6ee46a2c71f3fb26b90f, type: 3}
+    - {fileID: 2234217482444895019, guid: 3cb2fc03e35d6ee46a2c71f3fb26b90f, type: 3}
+    - {fileID: -2808669619797315584, guid: 3cb2fc03e35d6ee46a2c71f3fb26b90f, type: 3}
+    - {fileID: -8963173233360027655, guid: 3cb2fc03e35d6ee46a2c71f3fb26b90f, type: 3}
+    frameTime: 0.3
+  Death:
+    frames:
+    - {fileID: 9162530753608919383, guid: 3cb2fc03e35d6ee46a2c71f3fb26b90f, type: 3}
+    frameTime: 2
+  Walk:
+    frames:
+    - {fileID: -3783279149723336894, guid: 3cb2fc03e35d6ee46a2c71f3fb26b90f, type: 3}
+    - {fileID: 2234217482444895019, guid: 3cb2fc03e35d6ee46a2c71f3fb26b90f, type: 3}
+    - {fileID: -2808669619797315584, guid: 3cb2fc03e35d6ee46a2c71f3fb26b90f, type: 3}
+    - {fileID: -8963173233360027655, guid: 3cb2fc03e35d6ee46a2c71f3fb26b90f, type: 3}
+    frameTime: 0.3
+  EnemyStats:
+    maxHp: 1
+    moveSpeed: 1
+    damage: 1

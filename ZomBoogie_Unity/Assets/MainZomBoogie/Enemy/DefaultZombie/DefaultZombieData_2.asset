@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Idle:
     frames:
-    - {fileID: 9162530753608919383, guid: 3cb2fc03e35d6ee46a2c71f3fb26b90f, type: 3}
+    - {fileID: 2234217482444895019, guid: 3cb2fc03e35d6ee46a2c71f3fb26b90f, type: 3}
     frameTime: 2
   Attack:
     frames:

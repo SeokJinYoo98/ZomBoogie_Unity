@@ -15,8 +15,12 @@ public class Boogie : MonoBehaviour, IDamageable
     [SerializeField] private Weapon         mCurrWeapon;
     private Vector2                         mMoveDirection = Vector2.zero;
     private BaseStates                      mState;
-
+    private float _coolTime;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Awake()
+    {
+        _coolTime = 0.0f;
+    }
     void Start()
     {
         mState = new BaseStates();
@@ -27,6 +31,7 @@ public class Boogie : MonoBehaviour, IDamageable
     // Update is called once per frame
     void Update()
     {
+        CoolTime( );
         InputProcess();
         StateProcess(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         AnimateProcess();
@@ -43,7 +48,7 @@ public class Boogie : MonoBehaviour, IDamageable
         if (Input.GetKey(KeyCode.D))        mMoveDirection += Vector2.right;
         if (Input.GetKey(KeyCode.S))        mMoveDirection += Vector2.down;
         if (Input.GetKey(KeyCode.W))        mMoveDirection += Vector2.up;
-        if (Input.GetMouseButtonDown(0))    mCurrWeapon?.Fire( mStatus.mAttack );
+        if (Input.GetMouseButtonDown( 0 ))  Attack( );
         if (Input.GetMouseButtonDown(1))    EnemySpawner.gInstance.SpawnEnemy();
         
     }
@@ -87,5 +92,26 @@ public class Boogie : MonoBehaviour, IDamageable
     public int GetDamage()
     {
         return mStatus.mAttack;
+    }
+    bool ReadyToAttack()
+    {
+        if (mStatus.mAttackCoolTime <= _coolTime)
+        {
+            _coolTime = 0;
+            return true;
+        }
+        return false;
+    }
+    void Attack()
+    {
+        if (ReadyToAttack())
+        {
+            mCurrWeapon?.Fire( mStatus.mAttack );
+        }
+    }
+    void CoolTime()
+    {
+        if (_coolTime < mStatus.mAttackCoolTime)
+            _coolTime += Time.deltaTime;
     }
 }

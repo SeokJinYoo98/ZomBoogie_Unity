@@ -333,8 +333,8 @@ MonoBehaviour:
     mHealth: 1
     mAttack: 1
     mSpeed: 2
-    mAttackCoolTime: 0
-    mAttackRange: 0
+    mAttackCoolTime: 1
+    mAttackRange: 1
     mItemRange: 0
   mAnim: {fileID: 908051705}
   mRigidBody: {fileID: 908051707}
@@ -881,7 +881,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0d101188d13f46543956e62bc18213b8, type: 2}
   - {fileID: 11400000, guid: 68a5f780152479a419be62cd7468963c, type: 2}
   - {fileID: 11400000, guid: 715d7303bf2f139449aa5b1bf403cc32, type: 2}
-  EnemyIndex: 3
+  EnemyIndex: 1
 --- !u!1 &2110493352
 GameObject:
   m_ObjectHideFlags: 0

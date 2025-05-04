@@ -1,5 +1,6 @@
 using UnityEngine;
-
+using System.Collections.Generic;
+using System.Collections;
 /*
     불릿이 가져야할 정보?
     1. 방향
@@ -22,8 +23,9 @@ public class Bullet : MonoBehaviour
         public float       travel;
         public int         penetrate;
         public bool        isZombie;
+        public int         Damage;
 
-        public BulletInfo(Vector2 dir, float speed, float range, int pen, bool isZombie)
+        public BulletInfo(Vector2 dir, float speed, float range, int pen, bool isZombie, int damage)
         {
             this.direction  = dir;
             this.speed      = speed;
@@ -31,12 +33,16 @@ public class Bullet : MonoBehaviour
             this.travel     = 0.0f;
             this.penetrate  = pen;
             this.isZombie   = isZombie;
+            this.Damage     = damage;
         }
     }
+   //
 
     private SpriteRenderer      mSprite;
     private Rigidbody2D         mRigidBody;
     private Collider2D          mCollider;
+
+    [SerializeField] private List<Sprite> _sprites;
 
     private BulletInfo         mInfo;
 
@@ -52,6 +58,15 @@ public class Bullet : MonoBehaviour
         mInfo = bulletInfo;
         
         mRigidBody.linearVelocity = mInfo.direction * mInfo.speed;
+
+        if (mInfo.isZombie)
+        {
+            mSprite.sprite = _sprites[2];
+        }
+        else
+        {
+            mSprite.sprite = _sprites[1];
+        }
     }
 
     private void FixedUpdate()
@@ -62,6 +77,25 @@ public class Bullet : MonoBehaviour
         if (mInfo.travel >= mInfo.range)
         {
             BulletPool.gInstance.ReturnBullet(gameObject);
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        var collider = collision.collider;
+        if (mInfo.isZombie && !collider.CompareTag( "Player" ))
+            return;
+        
+        else if (!mInfo.isZombie && !collider.CompareTag( "Enemy" )) 
+            return;
+
+        if (collider.TryGetComponent<IDamageable>( out var target ))
+        {
+            if (target.TakeDamage( mInfo.Damage ))
+            {
+                if (--mInfo.penetrate <= 0)
+                    BulletPool.gInstance.ReturnBullet( gameObject );
+            }
         }
     }
 }

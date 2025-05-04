@@ -1,124 +1,184 @@
 using System.Data;
 using UnityEngine;
+using System;
+
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(BoxCollider2D))]
-public abstract class BaseEnemy : MonoBehaviour
+public abstract class BaseEnemy : MonoBehaviour, IDamageable
 {
-    public enum State
-    {
-        Idle,
-        Walk,
-        Attack,
-        Death
-    }
-  
-    protected SpriteRenderer      _spriteRenderer;
-    protected Rigidbody2D         _rigidbody;
-    protected EnemyData           _enemyData;
+    public enum State { Idle, Walk, Attack, Hit, Dead, Think }
 
-    protected float               _moveSpeed = 1.0f;
+    protected EnemyData           _data;
+    protected SpriteRenderer      _sr;
+    protected Rigidbody2D         _rb;
+
+
+    private   Vector2             _moveDir;
+
     protected float               _animTimer;
     protected int                 _animIndex;
 
     private   State               _currState;
+    private   Transform           _target;
+    private   float               _deadHitTime = 0.0f;
 
+    private int _hp;
+
+    private Vector2 _movement;
     protected void Awake()
     {
-        _spriteRenderer     = GetComponent<SpriteRenderer>();
-        _rigidbody          = GetComponent<Rigidbody2D>();
+        _sr         = GetComponent<SpriteRenderer>();
+        _rb          = GetComponent<Rigidbody2D>();
 
-        _currState          = State.Idle;
+        _target             = FindPlayer( );
+        _moveDir            = Vector2.zero;
+
+        SetState(State.Idle);
     }
     protected void Update()
     {
         UpdateState( );
+        UpdateAnimation( );
     }
-    private void HandleState(State state)
+    private void FixedUpdate()
     {
-        switch (state)
-        {
-            case State.Idle:    UpdateAnimation(_enemyData.Idle);   break;
-            case State.Walk:    UpdateAnimation(_enemyData.Walk);   break;
-            case State.Attack:  UpdateAnimation(_enemyData.Attack); break;
-            case State.Death:   UpdateAnimation(_enemyData.Death);  break;
-        }
+        _rb.linearVelocity = _movement;
     }
     private void UpdateState()
     {
-        // 1. 플레이어를 찾는다.
-        Transform target = FindPlayer();
-        if (target == null)
+        if (_currState == State.Hit)
         {
-            _currState = State.Idle;
+            _deadHitTime += Time.deltaTime;
+            if (0.5f <= _deadHitTime)
+            {
+                _deadHitTime = 0.0f;
+                if (_hp <= 0)
+                {
+                    SetState( State.Dead );
+                }
+                else
+                {
+                    SetState( State.Idle );
+                }
+            }
+        }
+        else if (_currState == State.Dead)
+        {
+            _deadHitTime += Time.deltaTime;
+            if (0.3f <= _deadHitTime)
+            {
+                _deadHitTime = 0.0f;
+                SetState( State.Idle );
+                EnemySpawner.gInstance.ReturnEnemy(gameObject);
+            }
+            if (0 < _hp)
+            {
+                SetState( State.Idle );
+            }
+        }
+        else if (_currState == State.Idle)
+        {
+            if (_target == null)
+            {
+                var target = FindPlayer( );
+
+                if (target != null)
+                {
+                    _target = target;
+                }
+            }
+            else
+            {
+                SetState( State.Walk );
+            }
+        }
+        else if (_currState == State.Walk)
+        {
+            Vector2 toTarget = _target.position - transform.position;
+            float   distSq   = toTarget.sqrMagnitude;
+            if (distSq > 0.0001f)
+            {
+                _moveDir = toTarget.normalized;
+                SetState( State.Walk );
+
+            }
+            else if (_data.EnemyStats.attackRange != 0)
+            {
+                Debug.Log( "Attack" );
+            }
+            else
+            {
+                _moveDir = Vector2.zero;
+                SetState( State.Idle );
+            }
+            CheckFlipX( _moveDir.x );
+        }
+        _movement = _moveDir * _data.EnemyStats.moveSpeed;
+    }
+    private void SetState(State next)
+    {
+        if (_currState == next) return;
+
+        _currState = next;
+        _moveDir = Vector2.zero;
+        _animTimer  = _animIndex = 0;
+    }
+    private void UpdateAnimation()
+    {
+        var anim = _data.GetAnimData( _currState );
+        // 프레임이 1개밖에 없으면 매 Update마다 그 프레임 그리기
+        if (anim.frames.Length == 1)
+        {
+            _sr.sprite = anim.frames[0];
             return;
         }
 
-        // 2. 방향을 구한다.
-        Vector2 dir = GetDirection(target);
-
-        // 3. 플립 여부를 결정한다.
-        CheckFlipX( dir.x );
-
-        // 4. 움직인다.
-        if (dir.sqrMagnitude > 0.0001f)
-        {
-            _currState = State.Walk;
-            _rigidbody.linearVelocity = dir * _moveSpeed;
-        }
-        else
-        {
-            _rigidbody.linearVelocity = Vector2.zero;
-        }
-
-        // 5. 공격이 있다면 공격을 수행한다.
-        if (PrepareAttack( ))
-        {
-            Attack( );
-        }
-
-        // 6. 상태를 업데이트한다.
-        HandleState( _currState );
-    }
-    private void UpdateAnimation(AnimationData anim)
-    {
         _animTimer += Time.deltaTime;
-
-        if (_animTimer >= anim.frameTime)
+        while (_animTimer >= anim.frameTime)
         {
             _animTimer -= anim.frameTime;
             _animIndex = (_animIndex + 1) % anim.frames.Length;
-            _spriteRenderer.sprite = anim.frames[_animIndex];
+            _sr.sprite = anim.frames[_animIndex];
         }
     }
+
+   
     public void SetEnemyData(EnemyData data)
     {
-        _enemyData = data;
+        _data = data;
         _animTimer = 0.0f;
         _animIndex = 0;
+        _moveDir = Vector2.zero;
+        _hp = data.EnemyStats.hp;
+        SetState( State.Idle );
     }
 
     private Transform FindPlayer()
     {
         return GameObject.FindWithTag("Player")?.transform;
     }
+
+
+    public bool TakeDamage(int damage)
+    {
+        // 이미 피격 무적(Hit) 중이거나 죽어 있으면 무시
+        if (_currState == State.Hit || _currState == State.Dead)
+            return false;
+
+        _hp -= damage;
+        SetState(State.Hit);
+        
+        return true;
+    }
+    public int GetDamage()
+    {
+        return _data.EnemyStats.damage;
+    }
     void CheckFlipX(float dirX)
     {
-        _spriteRenderer.flipX = dirX <= 0;
+        _sr.flipX = dirX <= 0;
     }
-    Vector2 GetDirection(Transform target)
-    {
-        Vector3 dir = target.position - transform.position;
-        return dir.normalized;
-    }
-    protected virtual bool PrepareAttack()
-    {
-        return false;
-    }
-    protected virtual bool Attack()
-    {
-        return false;
-    }
-
 }

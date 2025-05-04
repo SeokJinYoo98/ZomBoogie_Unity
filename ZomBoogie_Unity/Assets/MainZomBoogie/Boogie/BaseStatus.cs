@@ -7,8 +7,8 @@ using System.Numerics;
 [System.Serializable]
 public class BaseStatus
 {
-    public float mHealth;
-    public float mAttack;
+    public int mHealth;
+    public int mAttack;
     public float mSpeed;
 }
 [System.Serializable]

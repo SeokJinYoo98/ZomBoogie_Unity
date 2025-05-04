@@ -39,7 +39,7 @@ public class Weapon : MonoBehaviour
             mFireEffect.FlipX(flipX);
         }
     }
-    public void Fire()
+    public void Fire(int damage)
     {
         mFireEffect?.Play();
         var bulletObj = BulletPool.gInstance.GetBullet();
@@ -51,7 +51,8 @@ public class Weapon : MonoBehaviour
                 2.0f,
                 5.0f,
                 1,
-                false);
+                false,
+                damage);
         bulletObj.GetComponent<Bullet>().Init(bulletInfo);
     }
 }

@@ -23,10 +23,14 @@ MonoBehaviour:
     - {fileID: 1516628927993748045, guid: 783ffca449b711f4e997349c7b9f5ef0, type: 3}
     - {fileID: -5235302382946746806, guid: 783ffca449b711f4e997349c7b9f5ef0, type: 3}
     frameTime: 0.3
-  Death:
+  Dead:
     frames:
     - {fileID: -8468279953307047809, guid: 783ffca449b711f4e997349c7b9f5ef0, type: 3}
-    frameTime: 2
+    frameTime: 1
+  Hit:
+    frames:
+    - {fileID: 7059115115509265006, guid: 783ffca449b711f4e997349c7b9f5ef0, type: 3}
+    frameTime: 1
   Walk:
     frames:
     - {fileID: 7943656372603773728, guid: 783ffca449b711f4e997349c7b9f5ef0, type: 3}
@@ -35,6 +39,7 @@ MonoBehaviour:
     - {fileID: -5235302382946746806, guid: 783ffca449b711f4e997349c7b9f5ef0, type: 3}
     frameTime: 0.3
   EnemyStats:
-    maxHp: 1
-    moveSpeed: 1
+    hp: 3
+    moveSpeed: 1.2
     damage: 1
+    attackRange: 0

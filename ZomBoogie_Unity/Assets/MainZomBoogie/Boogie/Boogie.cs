@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 // gameObject는 현재 스크립트가 붙어 있는 오브젝트 그 자체를 가리키는 참조
-public class Boogie : MonoBehaviour
+public class Boogie : MonoBehaviour, IDamageable
 {
     [SerializeField] private BoogieStaus    mStatus;
     [SerializeField] private Animator       mAnim;
@@ -43,7 +43,7 @@ public class Boogie : MonoBehaviour
         if (Input.GetKey(KeyCode.D))        mMoveDirection += Vector2.right;
         if (Input.GetKey(KeyCode.S))        mMoveDirection += Vector2.down;
         if (Input.GetKey(KeyCode.W))        mMoveDirection += Vector2.up;
-        if (Input.GetMouseButtonDown(0))    mCurrWeapon?.Fire();
+        if (Input.GetMouseButtonDown(0))    mCurrWeapon?.Fire( mStatus.mAttack );
         if (Input.GetMouseButtonDown(1))    EnemySpawner.gInstance.SpawnEnemy();
         
     }
@@ -77,5 +77,15 @@ public class Boogie : MonoBehaviour
     private void Move()
     {
         mRigidBody.linearVelocity = mMoveDirection * mStatus.mSpeed;
+    }
+
+    public bool TakeDamage(int damage)
+    {
+        mStatus.mHealth -= damage;
+        return true;
+    }
+    public int GetDamage()
+    {
+        return mStatus.mAttack;
     }
 }

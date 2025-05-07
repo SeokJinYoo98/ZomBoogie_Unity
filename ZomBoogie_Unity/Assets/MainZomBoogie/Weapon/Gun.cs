@@ -39,7 +39,7 @@ public class Weapon : MonoBehaviour
             mFireEffect.FlipX(flipX);
         }
     }
-    public void Fire(int damage)
+    public void Fire(int damage, float bulletSpeed)
     {
         mFireEffect?.Play();
         var bulletObj = BulletPool.gInstance.GetBullet();
@@ -48,7 +48,7 @@ public class Weapon : MonoBehaviour
         Vector2 dir = transform.rotation * (mSpriteRenderer.flipX ? Vector2.left : Vector2.right);
         var bulletInfo = new Bullet.BulletInfo(
                 dir,
-                2.0f,
+                bulletSpeed,
                 5.0f,
                 1,
                 false,

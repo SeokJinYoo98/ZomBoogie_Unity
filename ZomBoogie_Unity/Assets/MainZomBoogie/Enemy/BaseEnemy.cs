@@ -16,7 +16,7 @@ public abstract class BaseEnemy : MonoBehaviour, IDamageable
     protected Rigidbody2D         _rb;
 
 
-    private   Vector2             _moveDir;
+    protected Vector2             _moveDir;
 
     protected float               _animTimer;
     protected int                 _animIndex;
@@ -25,9 +25,12 @@ public abstract class BaseEnemy : MonoBehaviour, IDamageable
     private   Transform           _target;
     private   float               _deadHitTime = 0.0f;
 
+    const float _hitTime = 0.1f;
+    const float _deadTime = 0.5f;
+
+    protected float _speedMag;
     private int _hp;
 
-    private Vector2 _movement;
     protected void Awake()
     {
         _sr         = GetComponent<SpriteRenderer>();
@@ -37,22 +40,24 @@ public abstract class BaseEnemy : MonoBehaviour, IDamageable
         _moveDir            = Vector2.zero;
 
         SetState(State.Idle);
+        _speedMag = 1.0f;
     }
     protected void Update()
     {
         UpdateState( );
         UpdateAnimation( );
+        CoolTime( );
     }
     private void FixedUpdate()
     {
-        _rb.linearVelocity = _movement;
+        _rb.linearVelocity = _moveDir * _data.EnemyStats.moveSpeed * _speedMag;
     }
     private void UpdateState()
     {
         if (_currState == State.Hit)
         {
             _deadHitTime += Time.deltaTime;
-            if (0.5f <= _deadHitTime)
+            if (_hitTime <= _deadHitTime)
             {
                 _deadHitTime = 0.0f;
                 if (_hp <= 0)
@@ -68,15 +73,11 @@ public abstract class BaseEnemy : MonoBehaviour, IDamageable
         else if (_currState == State.Dead)
         {
             _deadHitTime += Time.deltaTime;
-            if (0.3f <= _deadHitTime)
+            if (_deadTime <= _deadHitTime)
             {
                 _deadHitTime = 0.0f;
                 SetState( State.Idle );
                 EnemySpawner.gInstance.ReturnEnemy(gameObject);
-            }
-            if (0 < _hp)
-            {
-                SetState( State.Idle );
             }
         }
         else if (_currState == State.Idle)
@@ -103,22 +104,24 @@ public abstract class BaseEnemy : MonoBehaviour, IDamageable
             {
                 _moveDir = toTarget.normalized;
                 SetState( State.Walk );
+            }
 
-            }
-            else if (_data.EnemyStats.attackRange != 0)
-            {
-                Debug.Log( "Attack" );
-            }
             else
             {
                 _moveDir = Vector2.zero;
                 SetState( State.Idle );
             }
+
+            if (PrepareAttack( distSq ))
+            {
+                Attack( );
+            }
+
             CheckFlipX( _moveDir.x );
         }
-        _movement = _moveDir * _data.EnemyStats.moveSpeed;
+        
     }
-    private void SetState(State next)
+    protected void SetState(State next)
     {
         if (_currState == next) return;
 
@@ -129,7 +132,7 @@ public abstract class BaseEnemy : MonoBehaviour, IDamageable
     private void UpdateAnimation()
     {
         var anim = _data.GetAnimData( _currState );
-        // 프레임이 1개밖에 없으면 매 Update마다 그 프레임 그리기
+
         if (anim.frames.Length == 1)
         {
             _sr.sprite = anim.frames[0];
@@ -180,5 +183,12 @@ public abstract class BaseEnemy : MonoBehaviour, IDamageable
     void CheckFlipX(float dirX)
     {
         _sr.flipX = dirX <= 0;
+    }
+
+    protected abstract bool PrepareAttack(float distSq);
+    protected abstract void Attack();
+    protected virtual void CoolTime()
+    {
+
     }
 }

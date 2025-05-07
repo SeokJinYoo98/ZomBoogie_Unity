@@ -17,6 +17,7 @@ public class BoogieStaus : BaseStatus
     public float mAttackCoolTime;
     public float mAttackRange;
     public float mItemRange;
+    public float BulletSpeed;
 }
 public class BaseStates
 {

@@ -106,7 +106,7 @@ public class Boogie : MonoBehaviour, IDamageable
     {
         if (ReadyToAttack())
         {
-            mCurrWeapon?.Fire( mStatus.mAttack );
+            mCurrWeapon?.Fire( mStatus.mAttack, mStatus.BulletSpeed);
         }
     }
     void CoolTime()

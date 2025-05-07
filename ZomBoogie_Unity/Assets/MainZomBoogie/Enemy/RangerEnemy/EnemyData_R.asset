@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffc4370751c71dd41b3da620fdf9d06e, type: 3}
+  m_Name: EnemyData_R
+  m_EditorClassIdentifier: 
+  Idle:
+    frames:
+    - {fileID: -836959061743006945, guid: 1edca34b9ab21394abb780dfbb76c494, type: 3}
+    frameTime: 1
+  Attack:
+    frames:
+    - {fileID: -836959061743006945, guid: 1edca34b9ab21394abb780dfbb76c494, type: 3}
+    frameTime: 1
+  Dead:
+    frames:
+    - {fileID: -4515880109367280368, guid: 1edca34b9ab21394abb780dfbb76c494, type: 3}
+    frameTime: 1
+  Hit:
+    frames:
+    - {fileID: -3789466465519996587, guid: 1edca34b9ab21394abb780dfbb76c494, type: 3}
+    frameTime: 1
+  Walk:
+    frames:
+    - {fileID: -836959061743006945, guid: 1edca34b9ab21394abb780dfbb76c494, type: 3}
+    - {fileID: 8036809567259957152, guid: 1edca34b9ab21394abb780dfbb76c494, type: 3}
+    frameTime: 0.3
+  EnemyStats:
+    hp: 2
+    moveSpeed: 1.5
+    damage: 1
+    attackRange: 30

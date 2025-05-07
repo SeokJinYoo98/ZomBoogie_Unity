@@ -6,4 +6,15 @@ public class DefaultZombie : BaseEnemy
     {
         
     }
+
+    protected override bool PrepareAttack(float distSq)
+    {
+        return false;
+    }
+    protected override void Attack()
+    {
+    }
+    protected override void CoolTime()
+    {
+    }
 }

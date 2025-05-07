@@ -1,15 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-enum EnemyType
-{
-    Default_1,
-    Default_2,
-    Default_3,
-    Default_4,
-    Ranger,
-    Tanker
-};
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -21,8 +12,7 @@ public class EnemySpawner : MonoBehaviour
 
     private Transform                           _enemyParent;
     private Queue<GameObject>                   _defaultPool;
-
-    public int EnemyIndex = 0;
+    private Queue<GameObject>                   _rangerPool;
 
     //private int     _stageLevel = 0;
     //private float   _enemyZenTime = 0.0f;
@@ -48,22 +38,25 @@ public class EnemySpawner : MonoBehaviour
         }
 
         _defaultPool = new Queue<GameObject>( );
+        _rangerPool = new Queue<GameObject>( );
     }
     public void SpawnEnemy()
     {
-        GameObject enemy; 
-        if (0 < _defaultPool.Count)
-        {
-            enemy = _defaultPool.Dequeue();
-            enemy.SetActive( true );
-        }
-        else
-        {
-            enemy = Instantiate( _enemyPrefabs[0], _enemyParent );
-        }
-        enemy.transform.position = Camera.main.ScreenToWorldPoint( Input.mousePosition );
-        enemy.transform.position = new Vector3(enemy.transform.position.x, enemy.transform.position.y, 0.0f);
-        enemy.GetComponent<BaseEnemy>().SetEnemyData(_enemyDatas[EnemyIndex]);
+        int roll = Random.Range(0, 100);
+        GameObject enemy = SpawnRanger();
+        //if (roll <= 10)
+        //{
+        //    enemy = SpawnRanger( );
+        //}
+        //else
+        //{
+        //    enemy = SpawnDefault( );
+        //}
+
+        Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        pos.z = 0f;
+        enemy.transform.position = pos;
+        enemy.SetActive( true );
     }
     public void ReturnEnemy(GameObject enemy)
     {
@@ -76,5 +69,38 @@ public class EnemySpawner : MonoBehaviour
         {
             _defaultPool.Enqueue( enemy );
         }
+    }
+    GameObject SpawnDefault()
+    {
+        int roll = Random.Range(0, 4);
+
+        GameObject enemy;
+        if (0 < _defaultPool.Count)
+        {
+            enemy = _defaultPool.Dequeue( );
+            
+        }
+        else
+        {
+            enemy = Instantiate( _enemyPrefabs[0], _enemyParent );
+        }
+
+        enemy.GetComponent<BaseEnemy>( ).SetEnemyData( _enemyDatas[roll] );
+        return enemy;
+    }
+    GameObject SpawnRanger()
+    {
+        GameObject enemy;
+        if (0 < _rangerPool.Count)
+        {
+            enemy = _rangerPool.Dequeue( );
+        }
+        else
+        {
+            enemy = Instantiate( _enemyPrefabs[1], _enemyParent );
+        }
+
+        enemy.GetComponent<BaseEnemy>( ).SetEnemyData( _enemyDatas[4] );
+        return enemy;
     }
 }

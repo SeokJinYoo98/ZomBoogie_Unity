@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using Unity.AppUI.Core;
+using UnityEditor;
 /*
     불릿이 가져야할 정보?
     1. 방향
@@ -11,7 +13,6 @@ using System.Collections;
 
 
 [RequireComponent (typeof(SpriteRenderer))]
-[RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Collider2D))]
 public class Bullet : MonoBehaviour
 {
@@ -36,11 +37,11 @@ public class Bullet : MonoBehaviour
             this.Damage     = damage;
         }
     }
+    private float       _lifeTime = 0.0f;
+    private Collider2D  _prevTarget = null;
    //
 
     private SpriteRenderer      mSprite;
-    private Rigidbody2D         mRigidBody;
-    private Collider2D          mCollider;
 
     [SerializeField] private List<Sprite> _sprites;
 
@@ -49,16 +50,12 @@ public class Bullet : MonoBehaviour
     private void Awake()
     {
         mSprite     = GetComponent<SpriteRenderer>();
-        mRigidBody  = GetComponent<Rigidbody2D>();
-        mCollider   = GetComponent<Collider2D>();
     }
 
     public void Init(BulletInfo bulletInfo)
     {
         mInfo = bulletInfo;
-        
-        mRigidBody.linearVelocity = mInfo.direction * mInfo.speed;
-
+       
         if (mInfo.isZombie)
         {
             mSprite.sprite = _sprites[2];
@@ -67,35 +64,55 @@ public class Bullet : MonoBehaviour
         {
             mSprite.sprite = _sprites[1];
         }
+
+        _lifeTime = mInfo.range / mInfo.speed;
+
+        CancelInvoke( nameof( Return ) );
+        Invoke( nameof( Return ), _lifeTime );
+
     }
-
-    private void FixedUpdate()
+    private void Update()
     {
-        float delta = mRigidBody.linearVelocity.magnitude * Time.fixedDeltaTime;
-        mInfo.travel += delta;
-
-        if (mInfo.travel >= mInfo.range)
+        transform.Translate( mInfo.direction * mInfo.speed * Time.deltaTime, Space.World );
+        if (mInfo.range <= mInfo.travel)
         {
-            BulletPool.gInstance.ReturnBullet(gameObject);
+            BulletPool.gInstance.ReturnBullet( gameObject );
         }
     }
-
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        var collider = collision.collider;
-        if (mInfo.isZombie && !collider.CompareTag( "Player" ))
-            return;
-        
-        else if (!mInfo.isZombie && !collider.CompareTag( "Enemy" )) 
+        if (mInfo.isZombie && !other.CompareTag( "Player" ))
             return;
 
-        if (collider.TryGetComponent<IDamageable>( out var target ))
+        else if (!mInfo.isZombie && !other.CompareTag( "Enemy" ))
+            return;
+
+        if (_prevTarget == other) return;
+        if (other.TryGetComponent<IDamageable>( out var target ))
         {
-            if (target.TakeDamage( mInfo.Damage ))
+            bool hit = target.TakeDamage( mInfo.Damage );
+            if (hit)
             {
-                if (--mInfo.penetrate <= 0)
-                    BulletPool.gInstance.ReturnBullet( gameObject );
+                _prevTarget = other;
+                --mInfo.penetrate;
+            }
+            
+
+            if ( mInfo.penetrate <= 0 )
+            {
+                CancelInvoke( nameof( Return ) );
+                Return( );
             }
         }
+    }
+    private void Return()
+    {
+        // 풀에 반환
+        BulletPool.gInstance.ReturnBullet( gameObject );
+    }
+    private void OnDisable()
+    {
+        // 비활성화될 때 예약 취소
+        CancelInvoke( nameof( Return ) );
     }
 }

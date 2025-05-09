@@ -36,10 +36,11 @@ public class RanegerEnemy : BaseEnemy
     }
     override protected void Attack() 
     {
+        AudioManager.Instance.PlaySfx( "RangerAttack" );
         _attackElapsed = 0.0f;
         _canAttack = false;
 
-        var bulletObj = BulletPool.gInstance.GetBullet();
+        var bulletObj = BulletPool.Instance.GetBullet();
         bulletObj.transform.position = transform.position;
         Vector2 dir = _moveDir * (_sr.flipX ? -1 : 1);
         var bulletInfo = new Bullet.BulletInfo(

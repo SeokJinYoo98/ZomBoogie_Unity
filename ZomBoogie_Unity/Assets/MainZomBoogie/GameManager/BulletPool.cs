@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class BulletPool : MonoBehaviour
 {
-    public static BulletPool            gInstance;
+    public static BulletPool Instance { get; private set; }
     [SerializeField] private GameObject mBulletPrefab;
     [SerializeField] private int        mPoolSize = 30;
 
@@ -11,8 +11,12 @@ public class BulletPool : MonoBehaviour
     private Queue<GameObject>           mBulletPool;
     private void Awake()
     {
-        if (gInstance) return;
-        gInstance = this;
+        if (Instance)
+        {
+            Destroy( gameObject );
+            return;
+        }
+        Instance = this;
 
         if (mBulletParent == null)
         {

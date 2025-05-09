@@ -76,7 +76,7 @@ public class Bullet : MonoBehaviour
         transform.Translate( mInfo.direction * mInfo.speed * Time.deltaTime, Space.World );
         if (mInfo.range <= mInfo.travel)
         {
-            BulletPool.gInstance.ReturnBullet( gameObject );
+            BulletPool.Instance.ReturnBullet( gameObject );
         }
     }
     private void OnTriggerEnter2D(Collider2D other)
@@ -108,7 +108,7 @@ public class Bullet : MonoBehaviour
     private void Return()
     {
         // 풀에 반환
-        BulletPool.gInstance.ReturnBullet( gameObject );
+        BulletPool.Instance.ReturnBullet( gameObject );
     }
     private void OnDisable()
     {

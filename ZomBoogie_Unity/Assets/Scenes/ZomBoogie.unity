@@ -712,7 +712,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mEffectRenderer: {fileID: 1847010267}
-  mFireAuido: {fileID: 1847010270}
   mFrames:
   - {fileID: 2948968401522222964, guid: 2d1150b84bb7d614a894afc8bd051cd6, type: 3}
   - {fileID: -8905535095039584858, guid: 2d1150b84bb7d614a894afc8bd051cd6, type: 3}
@@ -827,6 +826,7 @@ GameObject:
   - component: {fileID: 1849094087}
   - component: {fileID: 1849094088}
   - component: {fileID: 1849094089}
+  - component: {fileID: 1849094090}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -884,6 +884,25 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 68a5f780152479a419be62cd7468963c, type: 2}
   - {fileID: 11400000, guid: 715d7303bf2f139449aa5b1bf403cc32, type: 2}
   - {fileID: 11400000, guid: 90b415ef65dc6334abc9a1ccec7b4ac4, type: 2}
+--- !u!114 &1849094090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1849094086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 653ea07d5bbd2c647ba9f4989a873d7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mixer: {fileID: 24100000, guid: e7276afcc5a77d040aafa2f5c30512bc, type: 2}
+  _bgmGroup: {fileID: 0}
+  _sfxGroup: {fileID: 0}
+  _uiGroup: {fileID: 0}
+  _bgm: 1
+  _sfx: 1
+  _ui: 1
 --- !u!1 &2110493352
 GameObject:
   m_ObjectHideFlags: 0

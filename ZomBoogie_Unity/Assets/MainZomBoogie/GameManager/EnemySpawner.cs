@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 public class EnemySpawner : MonoBehaviour
 {
 
-    public static EnemySpawner                  gInstance;
+    public static EnemySpawner                  Instance { get; private set; }
     [Header("프리팹 목록")]
     [SerializeField] private List<GameObject>   _enemyPrefabs;
     [SerializeField] private List<EnemyData>    _enemyDatas;
@@ -26,9 +26,13 @@ public class EnemySpawner : MonoBehaviour
     //private int _cuurDCnt = 0;
     private void Awake()
     {
-        if (gInstance) return;
+        if (Instance)
+        {
+            Destroy( gameObject );
+            return;
+        }
 
-        gInstance = this;
+        Instance = this;
 
         if (_enemyParent == null)
         {

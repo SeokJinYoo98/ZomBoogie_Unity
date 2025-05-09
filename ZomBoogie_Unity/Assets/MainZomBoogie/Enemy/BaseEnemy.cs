@@ -25,16 +25,16 @@ public abstract class BaseEnemy : MonoBehaviour, IDamageable
     private   Transform           _target;
     private   float               _deadHitTime = 0.0f;
 
-    const float _hitTime = 0.1f;
-    const float _deadTime = 0.5f;
+    const float         _hitTime = 0.1f;
+    const float         _deadTime = 0.5f;
 
-    protected float _speedMag;
-    private int _hp;
+    protected float     _speedMag;
+    private int         _hp;
 
     protected void Awake()
     {
-        _sr         = GetComponent<SpriteRenderer>();
-        _rb          = GetComponent<Rigidbody2D>();
+        _sr                 = GetComponent<SpriteRenderer>();
+        _rb                 = GetComponent<Rigidbody2D>();
 
         _target             = FindPlayer( );
         _moveDir            = Vector2.zero;
@@ -77,7 +77,7 @@ public abstract class BaseEnemy : MonoBehaviour, IDamageable
             {
                 _deadHitTime = 0.0f;
                 SetState( State.Idle );
-                EnemySpawner.gInstance.ReturnEnemy(gameObject);
+                EnemySpawner.Instance.ReturnEnemy(gameObject);
             }
         }
         else if (_currState == State.Idle)
@@ -173,7 +173,7 @@ public abstract class BaseEnemy : MonoBehaviour, IDamageable
 
         _hp -= damage;
         SetState(State.Hit);
-        
+        AudioManager.Instance.PlaySfx( "EnemyHit" );
         return true;
     }
     public int GetDamage()

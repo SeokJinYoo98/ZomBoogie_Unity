@@ -41,8 +41,9 @@ public class Weapon : MonoBehaviour
     }
     public void Fire(int damage, float bulletSpeed)
     {
+        AudioManager.Instance.PlaySfx( "PlayerFire" );
         mFireEffect?.Play();
-        var bulletObj = BulletPool.gInstance.GetBullet();
+        var bulletObj = BulletPool.Instance.GetBullet();
         bulletObj.transform.position = mFireTrasnform.transform.position;
         bulletObj.transform.rotation = transform.rotation;
         Vector2 dir = transform.rotation * (mSpriteRenderer.flipX ? Vector2.left : Vector2.right);

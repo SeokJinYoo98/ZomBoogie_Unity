@@ -4,7 +4,6 @@ using UnityEngine.Audio;
 public class FireEffect : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer     mEffectRenderer;
-    [SerializeField] private AudioSource        mFireAuido;
     [SerializeField] private Sprite[]           mFrames;
     [SerializeField] private float              mFrameTime;
     private int         mCurrFrame = 0;
@@ -37,7 +36,6 @@ public class FireEffect : MonoBehaviour
     }
     public void Play()
     {
-        mFireAuido.Play();
         mCurrFrame = 0;
         mEffectRenderer.enabled = true;
         mPaused = false;

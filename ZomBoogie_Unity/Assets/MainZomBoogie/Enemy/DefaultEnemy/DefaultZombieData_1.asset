@@ -16,13 +16,6 @@ MonoBehaviour:
     frames:
     - {fileID: -2032918634521260228, guid: de512aba3efc34548b3921f23dd7ca4f, type: 3}
     frameTime: 2
-  Attack:
-    frames:
-    - {fileID: -964842494257694910, guid: de512aba3efc34548b3921f23dd7ca4f, type: 3}
-    - {fileID: 2533526665695628294, guid: de512aba3efc34548b3921f23dd7ca4f, type: 3}
-    - {fileID: 6449746074256775497, guid: de512aba3efc34548b3921f23dd7ca4f, type: 3}
-    - {fileID: -2032918634521260228, guid: de512aba3efc34548b3921f23dd7ca4f, type: 3}
-    frameTime: 0.3
   Dead:
     frames:
     - {fileID: -8667968477820288674, guid: de512aba3efc34548b3921f23dd7ca4f, type: 3}
@@ -37,7 +30,7 @@ MonoBehaviour:
     - {fileID: 2533526665695628294, guid: de512aba3efc34548b3921f23dd7ca4f, type: 3}
     - {fileID: 6449746074256775497, guid: de512aba3efc34548b3921f23dd7ca4f, type: 3}
     - {fileID: -2032918634521260228, guid: de512aba3efc34548b3921f23dd7ca4f, type: 3}
-    frameTime: 0.3
+    frameTime: 0.2
   EnemyStats:
     hp: 1
     moveSpeed: 1

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class RanegerEnemy : BaseEnemy
+public class RangerEnemy : BaseEnemy
 {
     private float _attackCoolTime = 1.0f;
     private float _attackElapsed = 0.0f;
@@ -11,6 +11,7 @@ public class RanegerEnemy : BaseEnemy
     void Start()
     {
         _halfRange = _data.EnemyStats.attackRange / 2;
+        _hitAudioName = "RangerHit";
     }
 
     override protected bool  PrepareAttack(float distSq)
@@ -40,7 +41,7 @@ public class RanegerEnemy : BaseEnemy
         _attackElapsed = 0.0f;
         _canAttack = false;
 
-        var bulletObj = BulletPool.Instance.GetBullet();
+        var bulletObj = BulletManager.Instance.GetBullet();
         bulletObj.transform.position = transform.position;
         Vector2 dir = _moveDir * (_sr.flipX ? -1 : 1);
         var bulletInfo = new Bullet.BulletInfo(

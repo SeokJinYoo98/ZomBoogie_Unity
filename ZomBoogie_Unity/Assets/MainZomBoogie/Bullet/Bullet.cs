@@ -47,6 +47,7 @@ public class Bullet : MonoBehaviour
 
     private BulletInfo         mInfo;
 
+    private bool _colliding = false;
     private void Awake()
     {
         mSprite     = GetComponent<SpriteRenderer>();
@@ -76,11 +77,12 @@ public class Bullet : MonoBehaviour
         transform.Translate( mInfo.direction * mInfo.speed * Time.deltaTime, Space.World );
         if (mInfo.range <= mInfo.travel)
         {
-            BulletPool.Instance.ReturnBullet( gameObject );
+            BulletManager.Instance.ReturnBullet( gameObject );
         }
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (_colliding) return;
         if (mInfo.isZombie && !other.CompareTag( "Player" ))
             return;
 
@@ -93,6 +95,7 @@ public class Bullet : MonoBehaviour
             bool hit = target.TakeDamage( mInfo.Damage );
             if (hit)
             {
+                _colliding = true;
                 _prevTarget = other;
                 --mInfo.penetrate;
             }
@@ -104,15 +107,17 @@ public class Bullet : MonoBehaviour
                 Return( );
             }
         }
+        _colliding = false;
     }
     private void Return()
     {
         // 풀에 반환
-        BulletPool.Instance.ReturnBullet( gameObject );
+        BulletManager.Instance.ReturnBullet( gameObject );
     }
     private void OnDisable()
     {
         // 비활성화될 때 예약 취소
+        StopAllCoroutines();
         CancelInvoke( nameof( Return ) );
     }
 }

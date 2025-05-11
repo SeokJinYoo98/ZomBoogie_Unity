@@ -49,7 +49,7 @@ public class Boogie : MonoBehaviour, IDamageable
         if (Input.GetKey(KeyCode.S))        mMoveDirection += Vector2.down;
         if (Input.GetKey(KeyCode.W))        mMoveDirection += Vector2.up;
         if (Input.GetMouseButtonDown( 0 ))  Attack( );
-        if (Input.GetMouseButtonDown(1))    EnemySpawner.Instance.SpawnEnemy();
+        if (Input.GetMouseButtonDown(1))    EnemyManager.Instance.SpawnEnemy();
         
     }
     private void AnimateProcess()

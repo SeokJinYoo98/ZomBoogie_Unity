@@ -1,9 +1,9 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class BulletPool : MonoBehaviour
+public class BulletManager : MonoBehaviour
 {
-    public static BulletPool Instance { get; private set; }
+    public static BulletManager Instance { get; private set; }
     [SerializeField] private GameObject mBulletPrefab;
     [SerializeField] private int        mPoolSize = 30;
 

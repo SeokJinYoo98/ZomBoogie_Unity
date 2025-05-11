@@ -1,10 +1,8 @@
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
-using UnityEngine.Rendering;
-
-enum AudioType { BGM, Player, Enemy, UI };
 
 public class AudioManager : MonoBehaviour
 {
@@ -21,9 +19,16 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private float _sfx;
     [SerializeField] private float _ui;
 
-    private Dictionary<string, AudioClip>   _audioClips; 
-    private Queue<AudioSource>              _audioSources;
+    private Dictionary<string, AudioClip>   _sfxClips;
+    private Dictionary<string, SfxMeta>     _sfxMeta = new( );
 
+    private Dictionary<string, AudioClip>   _bgmClips;
+    private Dictionary<string, BgmMeta>     _bgmMeta = new( );
+
+    private Dictionary<string, AudioClip>   _uiClips;
+    private Dictionary<string, UiMeta>      _uiMeta  = new( );
+
+    private Queue<AudioSource>              _audioSources = new( );
     private void Awake()
     {
         if (Instance)
@@ -33,39 +38,64 @@ public class AudioManager : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad( gameObject );
-        _audioSources = new( );
-        LoadMixerGroup( );
+  
+        LoadSfxMeta();
         LoadClips();
     }
-    void LoadMixerGroup()
+    void LoadSfxMeta()
     {
-        _bgmGroup = _mixer.FindMatchingGroups( "Master/Bgm" )[0];
-        _sfxGroup = _mixer.FindMatchingGroups( "Master/Sfx" )[0];
-        _uiGroup = _mixer.FindMatchingGroups( "Master/UI" )[0]; 
+        var ta = Resources.Load<TextAsset>("Audio/Sfx/SfxData");
+        if (ta == null)
+        {
+            Debug.LogError( "SfxData.json not found in Resources/Audio/Sfx/" );
+            return;
+        }
+        _sfxMeta = JsonConvert
+            .DeserializeObject<Dictionary<string, SfxMeta>>( ta.text );
     }
     void LoadClips()
     {
-        _audioClips = new( );
+        _sfxClips = new( );
+        foreach (var clip in Resources.LoadAll<AudioClip>( "Audio/Sfx" ))
+            _sfxClips[clip.name] = clip;
 
-        foreach (var clip in Resources.LoadAll<AudioClip>( "Audio" ))
-            _audioClips[clip.name] = clip;
+        _bgmClips = new( );
+        foreach (var clip in Resources.LoadAll<AudioClip>( "Audio/Bgm" )) 
+           _bgmClips[clip.name] = clip;
 
-        Debug.Log( $"[Audio] {_audioClips.Count} clips loaded." );
+        _uiClips = new( );
+        foreach (var clip in Resources.LoadAll<AudioClip>( "Audio/Ui" ))
+            _uiClips[clip.name] = clip;
     }
     public void PlaySfx(string name)
     {
-        if (!_audioClips.TryGetValue( name, out var clip )) return;
+        // 1) 클립 가져오기
+        if (!_sfxClips.TryGetValue( name, out var clip ))
+        {
+            Debug.LogWarning( $"PlaySfx: Clip not found for ID '{name}'" );
+            return;
+        }
 
-        var src = _audioSources.Count > 0                              
-              ? _audioSources.Dequeue()
-              : gameObject.AddComponent<AudioSource>();
+        // 2) 메타 가져오기 (없으면 기본값)
+        if (!_sfxMeta.TryGetValue( name, out var meta ))
+            meta = new SfxMeta( );  // volume=1, pitchMin=1, pitchMax=1
 
-        src.outputAudioMixerGroup = _sfxGroup;                          
-        src.clip = clip;
-        src.volume = 1;
-        src.Play( );                                                     
+        // 3) AudioSource 풀에서 꺼내거나 새로 생성
+        AudioSource src = _audioSources.Count > 0
+        ? _audioSources.Dequeue()
+        : gameObject.AddComponent<AudioSource>();
 
-        StartCoroutine( ReturnAfter( src, clip.length ) ); 
+        // 4) 파라미터 세팅
+        src.outputAudioMixerGroup   = _sfxGroup;                       // SFX 믹서 그룹
+        src.clip                    = clip;
+        src.volume                  = meta.volume * _sfx;
+        src.pitch                   = Random.Range( meta.pitchMin, meta.pitchMax );
+       
+        // 5) 재생
+        src.Play( );
+
+        // 6) 끝나면 풀에 반납
+        StartCoroutine( ReturnAfter( src, clip.length ) );
     }
 
     IEnumerator ReturnAfter(AudioSource src, float t)

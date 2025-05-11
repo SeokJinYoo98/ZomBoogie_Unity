@@ -1,53 +1,22 @@
+using UnityEditor;
 using UnityEngine;
-
-[CreateAssetMenu(fileName = "AudioAsset", menuName = "Audio/AudioAsset" )]
-public abstract class AudioAsset : ScriptableObject
+using UnityEngine.Audio;
+// 1) JsonUtility 용 래퍼 타입  
+[System.Serializable]
+public class Pair<T>
 {
-    public AudioClip Clip;
-    [Range(0, 1)] public float Volume = 1.0f;
-    
-    public abstract void Play(float volume);
-    public abstract void Stop();
+    public string key;
+    public T      value;
 }
 
-[CreateAssetMenu(fileName = "SfxAudioAsset", menuName = "Audio/SFX")]
-public class SfxAudioAsset : AudioAsset
+[System.Serializable]
+public class Wrapper<T>
 {
-    public float PitchMin = 1.0f, PitchMax = 1.0f;
-    public SfxAudioAsset(AudioClip clip)
-    {
-
-    }
-    override public void Play(float volume)
-    {
-
-    }
-    override public void Stop()
-    {
-
-    }
+    public Pair<T>[] items;
 }
-[CreateAssetMenu( fileName = "BgmAudioAsset", menuName = "Audio/BGM" )]
-public class BgmAudioAsset : AudioAsset
-{
-    override public void Play(float volume)
-    {
 
-    }
-    override public void Stop()
-    {
-
-    }
-}
-[CreateAssetMenu( fileName = "UIAudioAsset", menuName = "Audio/UI" )]
-public class UIAudioAsset : AudioAsset
-{
-    override public void Play(float volume)
-    {
-
-    }
-    override public void Stop()
-    {
-
-    }
-}
+public class SfxMeta { public float volume=1f; public float pitchMin=1f; public float pitchMax=1f; }
+[System.Serializable]
+public class BgmMeta { public float volume=1f; /* 필요에 따라 페이드 시간 등 추가 */ }
+[System.Serializable]
+public class UiMeta { public float volume=1f; /* UI 쿨타임 등 추가 */ }

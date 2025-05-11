@@ -1,15 +1,11 @@
-using System.Data;
 using UnityEngine;
-using System;
-
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(BoxCollider2D))]
 public abstract class BaseEnemy : MonoBehaviour, IDamageable
 {
-    public enum State { Idle, Walk, Attack, Hit, Dead, Think }
+    public enum State { Idle, Walk, Hit, Dead }
 
     protected EnemyData           _data;
     protected SpriteRenderer      _sr;
@@ -21,15 +17,18 @@ public abstract class BaseEnemy : MonoBehaviour, IDamageable
     protected float               _animTimer;
     protected int                 _animIndex;
 
-    private   State               _currState;
-    private   Transform           _target;
-    private   float               _deadHitTime = 0.0f;
+    private     State               _currState;
+    private     float                 _currFrameTime = 0.0f;
+   
+    private     Transform           _target;
+    private     float               _deadHitTime = 0.0f;
+    protected   string              _hitAudioName;
 
-    const float         _hitTime = 0.1f;
-    const float         _deadTime = 0.5f;
-
-    protected float     _speedMag;
-    private int         _hp;
+    const       float           _hitTime = 0.1f;
+    const       float           _deadTime = 0.5f;
+    protected   int             _frameDivide = 1;
+    protected   float           _speedMag;
+    private     int             _hp;
 
     protected void Awake()
     {
@@ -44,6 +43,7 @@ public abstract class BaseEnemy : MonoBehaviour, IDamageable
     }
     protected void Update()
     {
+        if (!_data) return;
         UpdateState( );
         UpdateAnimation( );
         CoolTime( );
@@ -56,6 +56,7 @@ public abstract class BaseEnemy : MonoBehaviour, IDamageable
     {
         if (_currState == State.Hit)
         {
+            _moveDir = Vector2.zero;
             _deadHitTime += Time.deltaTime;
             if (_hitTime <= _deadHitTime)
             {
@@ -75,13 +76,12 @@ public abstract class BaseEnemy : MonoBehaviour, IDamageable
             _deadHitTime += Time.deltaTime;
             if (_deadTime <= _deadHitTime)
             {
-                _deadHitTime = 0.0f;
-                SetState( State.Idle );
-                EnemySpawner.Instance.ReturnEnemy(gameObject);
+                EnemyManager.Instance.ReturnEnemy(gameObject);
             }
         }
         else if (_currState == State.Idle)
         {
+            _moveDir = Vector2.zero;
             if (_target == null)
             {
                 var target = FindPlayer( );
@@ -100,7 +100,7 @@ public abstract class BaseEnemy : MonoBehaviour, IDamageable
         {
             Vector2 toTarget = _target.position - transform.position;
             float   distSq   = toTarget.sqrMagnitude;
-            if (distSq > 0.0001f)
+            if (distSq > 0.1f)
             {
                 _moveDir = toTarget.normalized;
                 SetState( State.Walk );
@@ -131,7 +131,10 @@ public abstract class BaseEnemy : MonoBehaviour, IDamageable
     }
     private void UpdateAnimation()
     {
-        var anim = _data.GetAnimData( _currState );
+        if (!_data) return;
+
+        var anim = _data.GetAnimData(_currState);
+        _currFrameTime = anim.frameTime / _frameDivide;
 
         if (anim.frames.Length == 1)
         {
@@ -140,30 +143,36 @@ public abstract class BaseEnemy : MonoBehaviour, IDamageable
         }
 
         _animTimer += Time.deltaTime;
-        while (_animTimer >= anim.frameTime)
+        while (_animTimer >= _currFrameTime)
         {
-            _animTimer -= anim.frameTime;
+            _animTimer -= _currFrameTime;
             _animIndex = (_animIndex + 1) % anim.frames.Length;
             _sr.sprite = anim.frames[_animIndex];
         }
     }
 
-   
-    public void SetEnemyData(EnemyData data)
+    public void Init()
     {
-        _data = data;
+        _speedMag = 1.0f;
         _animTimer = 0.0f;
         _animIndex = 0;
         _moveDir = Vector2.zero;
-        _hp = data.EnemyStats.hp;
+        _hp = _data.EnemyStats.hp;
         SetState( State.Idle );
+
+        var anim = _data.GetAnimData(State.Idle);
+        _sr.sprite = anim.frames[0];
+        gameObject.SetActive( true );
+    }
+    public void SetEnemyData(EnemyData data)
+    {
+        _data = data;
     }
 
     private Transform FindPlayer()
     {
         return GameObject.FindWithTag("Player")?.transform;
     }
-
 
     public bool TakeDamage(int damage)
     {
@@ -173,7 +182,7 @@ public abstract class BaseEnemy : MonoBehaviour, IDamageable
 
         _hp -= damage;
         SetState(State.Hit);
-        AudioManager.Instance.PlaySfx( "EnemyHit" );
+        AudioManager.Instance.PlaySfx( _hitAudioName );
         return true;
     }
     public int GetDamage()

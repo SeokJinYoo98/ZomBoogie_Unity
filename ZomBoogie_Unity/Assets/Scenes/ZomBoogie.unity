@@ -331,9 +331,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mStatus:
     mHealth: 1
-    mAttack: 1
+    mAttack: 5
     mSpeed: 2
-    mAttackCoolTime: 1
+    mAttackCoolTime: 0.1
     mAttackRange: 1
     mItemRange: 0
     BulletSpeed: 5
@@ -878,12 +878,14 @@ MonoBehaviour:
   _enemyPrefabs:
   - {fileID: 2228708822467877996, guid: 823c9e3f8dbcc264fa6edb4469988ec8, type: 3}
   - {fileID: 2228708822467877996, guid: 479f86f451e813347bf229d1c1ec671e, type: 3}
+  - {fileID: 2228708822467877996, guid: ec2b4ba5f5110694c97f8697bafa7943, type: 3}
   _enemyDatas:
   - {fileID: 11400000, guid: 3fac8ec36ca41304282ef40b679f3e1a, type: 2}
   - {fileID: 11400000, guid: 0d101188d13f46543956e62bc18213b8, type: 2}
   - {fileID: 11400000, guid: 68a5f780152479a419be62cd7468963c, type: 2}
   - {fileID: 11400000, guid: 715d7303bf2f139449aa5b1bf403cc32, type: 2}
   - {fileID: 11400000, guid: 90b415ef65dc6334abc9a1ccec7b4ac4, type: 2}
+  - {fileID: 11400000, guid: b487bd13a367c8e4eb93a2a35d15ea76, type: 2}
 --- !u!114 &1849094090
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -897,9 +899,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mixer: {fileID: 24100000, guid: e7276afcc5a77d040aafa2f5c30512bc, type: 2}
-  _bgmGroup: {fileID: 0}
-  _sfxGroup: {fileID: 0}
-  _uiGroup: {fileID: 0}
+  _bgmGroup: {fileID: 101195430952562930, guid: e7276afcc5a77d040aafa2f5c30512bc, type: 2}
+  _sfxGroup: {fileID: 828969522357741955, guid: e7276afcc5a77d040aafa2f5c30512bc, type: 2}
+  _uiGroup: {fileID: -4333744533834493240, guid: e7276afcc5a77d040aafa2f5c30512bc, type: 2}
   _bgm: 1
   _sfx: 1
   _ui: 1

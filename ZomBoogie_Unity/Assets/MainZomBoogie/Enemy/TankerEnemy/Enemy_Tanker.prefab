@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 1842111393529010351}
   - component: {fileID: 3486134500160720112}
   - component: {fileID: 1418122891102484475}
-  - component: {fileID: 4412687900903340255}
+  - component: {fileID: -7718545104818685245}
   m_Layer: 0
-  m_Name: DefaultZombie
+  m_Name: Enemy_Tanker
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -163,7 +163,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &4412687900903340255
+--- !u!114 &-7718545104818685245
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -172,6 +172,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 2228708822467877996}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1055379658b686845bcbf13e4a912ccd, type: 3}
+  m_Script: {fileID: 11500000, guid: 85f4a289d11d7584384b756252c72d88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

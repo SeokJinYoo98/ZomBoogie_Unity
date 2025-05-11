@@ -23,13 +23,11 @@ public class EnemyData : ScriptableObject
     {
         BaseEnemy.State.Idle =>     Idle,
         BaseEnemy.State.Walk =>     Walk,
-        BaseEnemy.State.Attack =>   Attack,
         BaseEnemy.State.Dead =>     Dead,
         BaseEnemy.State.Hit =>      Hit,
         _ => default 
     };
     public AnimationData Idle;
-    public AnimationData Attack;
     public AnimationData Dead;
     public AnimationData Hit;
     public AnimationData Walk;

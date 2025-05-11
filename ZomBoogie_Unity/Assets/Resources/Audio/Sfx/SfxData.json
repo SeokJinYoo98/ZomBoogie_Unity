@@ -1,0 +1,67 @@
+{
+  "PlayerFire": {
+    "volume": 1.0,
+    "pitchMin": 1.0,
+    "pitchMax": 1.0
+  },
+  "PlayerHit": {
+    "volume": 1.0,
+    "pitchMin": 1.0,
+    "pitchMax": 1.0
+  },
+
+  "DeafultHit": {
+    "volume": 1.0,
+    "pitchMin": 1.0,
+    "pitchMax": 1.0
+  },
+
+  "RangerAttack": {
+    "volume": 1.0,
+    "pitchMin": 1.0,
+    "pitchMax": 1.0
+  },
+  "RangerHit": {
+    "volume": 1.0,
+    "pitchMin": 1.0,
+    "pitchMax": 1.0
+  },
+
+  "TankerHit": {
+    "volume": 1.0,
+    "pitchMin": 1.0,
+    "pitchMax": 1.0
+  },
+
+  "Magnetic": {
+    "volume": 1.0,
+    "pitchMin": 1.0,
+    "pitchMax": 1.0
+  },
+  "Vaccine": {
+    "volume": 1.0,
+    "pitchMin": 1.0,
+    "pitchMax": 1.0
+  },
+  "Coin": {
+    "volume": 1.0,
+    "pitchMin": 1.0,
+    "pitchMax": 1.0
+  },
+
+  "LevelUp": {
+    "volume": 1.0,
+    "pitchMin": 1.0,
+    "pitchMax": 1.0
+  },
+  "Lose": {
+    "volume": 1.0,
+    "pitchMin": 1.0,
+    "pitchMax": 1.0
+  },
+  "Win": {
+    "volume": 1.0,
+    "pitchMin": 1.0,
+    "pitchMax": 1.0
+  }
+}

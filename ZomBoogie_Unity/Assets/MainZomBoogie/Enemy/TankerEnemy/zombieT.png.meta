@@ -178,7 +178,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: zombieT_2
+      name: zombieT_4
       rect:
         serializedVersion: 2
         x: 19
@@ -200,7 +200,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: zombieT_3
+      name: zombieT_2
       rect:
         serializedVersion: 2
         x: 38
@@ -222,7 +222,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: zombieT_4
+      name: zombieT_5
       rect:
         serializedVersion: 2
         x: 38
@@ -244,7 +244,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: zombieT_5
+      name: zombieT_3
       rect:
         serializedVersion: 2
         x: 0
@@ -325,10 +325,10 @@ TextureImporter:
     nameFileIdTable:
       zombieT_0: -3034251962730935257
       zombieT_1: -6309838311308422467
-      zombieT_2: -8550397825723944893
-      zombieT_3: -2183317324193484702
-      zombieT_4: 5903231932871829267
-      zombieT_5: 4845500174535406032
+      zombieT_2: -2183317324193484702
+      zombieT_3: 4845500174535406032
+      zombieT_4: -8550397825723944893
+      zombieT_5: 5903231932871829267
       zombieT_6: 4221300626985434392
       zombieT_7: 3369952466875276615
   mipmapLimitGroupName: 

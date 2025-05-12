@@ -10,10 +10,6 @@ public class TankerEnemy : BaseEnemy
     }
     protected override bool PrepareAttack(float distSq)
     {
-        if (_moveDir.magnitude <= 0.1f)
-        {
-            _speedMag = 0.0f;
-        }
         _prev = _run;
         _run = distSq < _data.EnemyStats.attackRange;
 

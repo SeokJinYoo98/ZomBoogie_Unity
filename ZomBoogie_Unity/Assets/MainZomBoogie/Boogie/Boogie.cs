@@ -8,24 +8,31 @@ using UnityEngine.InputSystem;
 // gameObject는 현재 스크립트가 붙어 있는 오브젝트 그 자체를 가리키는 참조
 public class Boogie : MonoBehaviour, IDamageable
 {
-    [SerializeField] private BoogieStaus    mStatus;
-    [SerializeField] private Animator       mAnim;
-    [SerializeField] private Rigidbody2D    mRigidBody;
-    [SerializeField] private SpriteRenderer mSpriteRenderer;
-    [SerializeField] private Weapon         mCurrWeapon;
-    private Vector2                         mMoveDirection = Vector2.zero;
-    private BaseStates                      mState;
+    [SerializeField] private BoogieStatus   _status;
+    [SerializeField] private Weapon         _gun;
+    private Animator       _anim;
+    private Rigidbody2D    _rb;
+    private SpriteRenderer _sr;
+   
+    private Vector2                         _moveDir = Vector2.zero;
+    private BaseStates                      _state;
     private float _coolTime;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
+        _anim = GetComponent<Animator>( );
+        _sr = GetComponent<SpriteRenderer>( );
+        _rb = GetComponent<Rigidbody2D>( );
         _coolTime = 0.0f;
+
+        GetComponent<CircleCollider2D>( ).radius = _status.ItemRange;
     }
     void Start()
     {
-        mState = new BaseStates();
-        mAnim.SetBool("Idle", true);
-        mState.SetState("Idle");
+        _status.CurrHp = _status.MaxHp;
+        _state = new BaseStates();
+        _anim.SetBool("Idle", true);
+        _state.SetState("Idle");
     }
 
     // Update is called once per frame
@@ -42,60 +49,61 @@ public class Boogie : MonoBehaviour, IDamageable
     }
     private void InputProcess()
     {
-        mMoveDirection = Vector2.zero;
+        _moveDir = Vector2.zero;
 
-        if (Input.GetKey(KeyCode.A))        mMoveDirection += Vector2.left;
-        if (Input.GetKey(KeyCode.D))        mMoveDirection += Vector2.right;
-        if (Input.GetKey(KeyCode.S))        mMoveDirection += Vector2.down;
-        if (Input.GetKey(KeyCode.W))        mMoveDirection += Vector2.up;
+        if (Input.GetKey(KeyCode.A))        _moveDir += Vector2.left;
+        if (Input.GetKey(KeyCode.D))        _moveDir += Vector2.right;
+        if (Input.GetKey(KeyCode.S))        _moveDir += Vector2.down;
+        if (Input.GetKey(KeyCode.W))        _moveDir += Vector2.up;
         if (Input.GetMouseButtonDown( 0 ))  Attack( );
         if (Input.GetMouseButtonDown(1))    EnemyManager.Instance.SpawnEnemy();
         
     }
     private void AnimateProcess()
     {
-        if (mState.IsDirtyState())
+        if (_state.IsDirtyState())
         {
-            mAnim.SetBool(mState.mPrevState, false);
-            mAnim.SetBool(mState.mCurrState, true);
+            _anim.SetBool(_state.mPrevState, false);
+            _anim.SetBool(_state.mCurrState, true);
         }
     }
     private void StateProcess(Vector3 targetPos)
     {
-        mSpriteRenderer.flipX = (mRigidBody.position.x > targetPos.x);
+        _sr.flipX = (_rb.position.x > targetPos.x);
 
-        if (mMoveDirection.sqrMagnitude <= 0.001f)
+        if (_moveDir.sqrMagnitude <= 0.001f)
         {
-            mState.SetState("Idle");
+            _state.SetState("Idle");
         }
         else
         {
             bool isForward = 
-                (mMoveDirection.x < 0f && mSpriteRenderer.flipX)
+                (_moveDir.x < 0f && _sr.flipX)
                 || 
-                (mMoveDirection.x >= 0f && !mSpriteRenderer.flipX);
+                (_moveDir.x >= 0f && !_sr.flipX);
 
-            mState.SetState(isForward ? "WalkForward" : "WalkBackward");
+            _state.SetState(isForward ? "WalkForward" : "WalkBackward");
         }
-        mCurrWeapon?.LookAt(targetPos, mSpriteRenderer.flipX);
+        _gun?.LookAt(targetPos, _sr.flipX);
     }
     private void Move()
     {
-        mRigidBody.linearVelocity = mMoveDirection * mStatus.mSpeed;
+        _rb.linearVelocity = _moveDir * _status.Speed;
     }
 
     public bool TakeDamage(int damage)
     {
-        mStatus.mHealth -= damage;
+        AudioManager.Instance.PlaySfx( "PlayerHit" );
+        _status.CurrHp -= damage;
         return true;
     }
     public int GetDamage()
     {
-        return mStatus.mAttack;
+        return _status.Attack;
     }
     bool ReadyToAttack()
     {
-        if (mStatus.mAttackCoolTime <= _coolTime)
+        if (_status.AttackCoolTime <= _coolTime)
         {
             _coolTime = 0;
             return true;
@@ -106,18 +114,24 @@ public class Boogie : MonoBehaviour, IDamageable
     {
         if (ReadyToAttack())
         {
-            mCurrWeapon?.Fire( mStatus.mAttack, mStatus.BulletSpeed);
+            _gun?.Fire( _status.Attack, _status.BulletSpeed);
         }
     }
     void CoolTime()
     {
-        if (_coolTime < mStatus.mAttackCoolTime)
+        if (_coolTime < _status.AttackCoolTime)
             _coolTime += Time.deltaTime;
     }
-
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.TryGetComponent<BaseItem>(out var item))
+        {
+            item.Activate( _status );
+        }
+    }
     void OnTriggerEnter2D(Collider2D c)
     {
-        if (c.CompareTag( "Item" ))
-            Debug.Log( "Item" );
+
     }
+
 }

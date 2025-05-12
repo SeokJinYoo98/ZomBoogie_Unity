@@ -330,18 +330,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9b40a45313c5ef4aa346d04a51ffd52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mStatus:
-    mHealth: 1
-    mAttack: 5
-    mSpeed: 2
-    mAttackCoolTime: 0.1
-    mAttackRange: 1
-    mItemRange: 3
-    BulletSpeed: 5
-  mAnim: {fileID: 908051705}
-  mRigidBody: {fileID: 908051707}
-  mSpriteRenderer: {fileID: 908051708}
-  mCurrWeapon: {fileID: 1787083601}
+  _status:
+    CurrXp: 0
+    CurrHp: 0
+    MaxHp: 0
+    Attack: 1
+    Speed: 2
+    AttackCoolTime: 0.1
+    AttackRange: 5
+    ItemRange: 5
+    BulletSpeed: 10
+  _gun: {fileID: 1787083601}
 --- !u!4 &908051704
 Transform:
   m_ObjectHideFlags: 0
@@ -390,9 +389,9 @@ Rigidbody2D:
   m_GameObject: {fileID: 908051702}
   m_BodyType: 1
   m_Simulated: 1
-  m_UseFullKinematicContacts: 0
+  m_UseFullKinematicContacts: 1
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 0.0001
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 0
@@ -406,7 +405,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!212 &908051708
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -475,7 +474,7 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 448
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -521,10 +520,10 @@ CircleCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2

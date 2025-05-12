@@ -2,21 +2,17 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Numerics;
 
-
-
 [System.Serializable]
-public class BaseStatus
+public class BoogieStatus
 {
-    public int mHealth;
-    public int mAttack;
-    public float mSpeed;
-}
-[System.Serializable]
-public class BoogieStaus : BaseStatus
-{
-    public float mAttackCoolTime;
-    public float mAttackRange;
-    public float mItemRange;
+    public int CurrXp;
+    public int CurrHp;
+    public int MaxHp;
+    public int Attack;
+    public float Speed;
+    public float AttackCoolTime;
+    public float AttackRange;
+    public float ItemRange;
     public float BulletSpeed;
 }
 public class BaseStates

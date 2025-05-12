@@ -39,7 +39,6 @@ public class Bullet : MonoBehaviour
     }
     private float       _lifeTime = 0.0f;
     private Collider2D  _prevTarget = null;
-   //
 
     private SpriteRenderer      mSprite;
 

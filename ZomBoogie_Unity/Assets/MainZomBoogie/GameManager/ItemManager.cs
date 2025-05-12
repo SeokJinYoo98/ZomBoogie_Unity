@@ -1,6 +1,8 @@
 using NUnit.Framework;
 using System.Collections.Generic;
+using UnityEditor.Search;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public enum ItemType { Coin, Vaccine, Magnetic };
 public class ItemManager : MonoBehaviour
@@ -32,10 +34,10 @@ public class ItemManager : MonoBehaviour
 
         _enemyManager = GetComponent<EnemyManager>( );
 
-        _itemPools = new Dictionary<ItemType, Queue<GameObject>>();
-        _itemPools[ItemType.Vaccine]    = new Queue<GameObject>();
-        _itemPools[ItemType.Coin]       = new Queue<GameObject>();    
-        _itemPools[ItemType.Magnetic]   = new Queue<GameObject>();
+        _itemPools = new Dictionary<ItemType, Queue<GameObject>>( );
+        _itemPools[ItemType.Vaccine] = new Queue<GameObject>( );
+        _itemPools[ItemType.Coin] = new Queue<GameObject>( );
+        _itemPools[ItemType.Magnetic] = new Queue<GameObject>( );
     }
     private void OnEnable()
     {
@@ -76,9 +78,11 @@ public class ItemManager : MonoBehaviour
 
         if (0 < pool.Count)
         {
-            return pool.Dequeue( );
+            var item = pool.Dequeue();
+            item.SetActive( true );
+            return item;
         }
-        Debug.Log( (int)type );
+
         return Instantiate( _itemPrefabs[(int)type], _itemParent );
     }
 
@@ -90,5 +94,24 @@ public class ItemManager : MonoBehaviour
         else if (roll <= 95)
             return ItemType.Coin;
         return ItemType.Magnetic;
+    }
+
+    public void ReturnItem(GameObject item, ItemType type)
+    {
+        Queue<GameObject> pool = null;
+        switch (type)
+        {   
+            case ItemType.Vaccine:
+                pool = _itemPools[ItemType.Vaccine];
+                break;
+            case ItemType.Magnetic:
+                pool = _itemPools[ItemType.Magnetic];
+                break;
+            default:
+                pool = _itemPools[ItemType.Coin];
+                break;
+        }
+        item.SetActive( false );
+        pool.Enqueue( item );
     }
 }

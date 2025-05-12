@@ -14,6 +14,7 @@ public class BoogieStatus
     public float AttackRange;
     public float ItemRange;
     public float BulletSpeed;
+    public float MagTime;
 }
 public class BaseStates
 {

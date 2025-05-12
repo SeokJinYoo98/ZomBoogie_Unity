@@ -17,6 +17,7 @@ public class Boogie : MonoBehaviour, IDamageable
     private Vector2                         _moveDir = Vector2.zero;
     private BaseStates                      _state;
     private float _coolTime;
+    private CircleCollider2D _itemColl;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
@@ -25,7 +26,8 @@ public class Boogie : MonoBehaviour, IDamageable
         _rb = GetComponent<Rigidbody2D>( );
         _coolTime = 0.0f;
 
-        GetComponent<CircleCollider2D>( ).radius = _status.ItemRange;
+        _itemColl = GetComponent<CircleCollider2D>( );
+        _itemColl.radius = _status.ItemRange;
     }
     void Start()
     {
@@ -121,6 +123,15 @@ public class Boogie : MonoBehaviour, IDamageable
     {
         if (_coolTime < _status.AttackCoolTime)
             _coolTime += Time.deltaTime;
+        if (0.0f <= _status.MagTime )
+        {
+            _itemColl.radius = int.MaxValue;
+            _status.MagTime -= Time.deltaTime;
+            if (_status.MagTime <= 0.0f)
+            {
+                _itemColl.radius = _status.ItemRange;
+            }
+        }
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -128,10 +139,6 @@ public class Boogie : MonoBehaviour, IDamageable
         {
             item.Activate( _status );
         }
-    }
-    void OnTriggerEnter2D(Collider2D c)
-    {
-
     }
 
 }

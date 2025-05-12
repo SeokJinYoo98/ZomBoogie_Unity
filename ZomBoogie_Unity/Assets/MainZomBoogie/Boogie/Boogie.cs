@@ -114,4 +114,10 @@ public class Boogie : MonoBehaviour, IDamageable
         if (_coolTime < mStatus.mAttackCoolTime)
             _coolTime += Time.deltaTime;
     }
+
+    void OnTriggerEnter2D(Collider2D c)
+    {
+        if (c.CompareTag( "Item" ))
+            Debug.Log( "Item" );
+    }
 }

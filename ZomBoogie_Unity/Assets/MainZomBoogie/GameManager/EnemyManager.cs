@@ -16,6 +16,7 @@ public class EnemyManager : MonoBehaviour
     private Queue<GameObject>                   _rangerPool;
     private Queue<GameObject>                   _tankerPool;
 
+    public event Action<Vector3>                OnEnemyReturned;
     private void Awake()
     {
         if (Instance)
@@ -92,28 +93,25 @@ public class EnemyManager : MonoBehaviour
     {
         if (enemy.TryGetComponent<BaseEnemy>( out var enemyComp ))
         {
-            // 비활성화 하고
-            enemy.SetActive( false );
+            OnEnemyReturned?.Invoke( enemy.transform.position );
 
-            // 타입별로 분기
             switch (enemyComp)
             {
                 case DefaultZombie dz:
                     _defaultPool.Enqueue( enemy );
-                    // dz 추가 로직…
                     break;
                 case RangerEnemy re:
                     _rangerPool.Enqueue( enemy );
-                    // re 추가 로직…
                     break;
                 case TankerEnemy te:
                     _tankerPool.Enqueue( enemy );
-                    // te 추가 로직…
                     break;
                 default:
                     Debug.LogWarning( $"알 수 없는 BaseEnemy 서브타입: {enemyComp.GetType( ).Name}" );
                     break;
             }
+          
+            enemy.SetActive( false );
         }
         else
         {

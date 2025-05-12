@@ -16,10 +16,6 @@ MonoBehaviour:
     frames:
     - {fileID: -836959061743006945, guid: 1edca34b9ab21394abb780dfbb76c494, type: 3}
     frameTime: 1
-  Attack:
-    frames:
-    - {fileID: -836959061743006945, guid: 1edca34b9ab21394abb780dfbb76c494, type: 3}
-    frameTime: 1
   Dead:
     frames:
     - {fileID: -4515880109367280368, guid: 1edca34b9ab21394abb780dfbb76c494, type: 3}
@@ -37,4 +33,4 @@ MonoBehaviour:
     hp: 2
     moveSpeed: 1.5
     damage: 1
-    attackRange: 30
+    attackRange: 50

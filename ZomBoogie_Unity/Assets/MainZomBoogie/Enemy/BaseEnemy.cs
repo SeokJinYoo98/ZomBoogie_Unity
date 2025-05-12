@@ -11,7 +11,6 @@ public abstract class BaseEnemy : MonoBehaviour, IDamageable
     protected SpriteRenderer      _sr;
     protected Rigidbody2D         _rb;
 
-
     protected Vector2             _moveDir;
 
     protected float               _animTimer;
@@ -76,7 +75,7 @@ public abstract class BaseEnemy : MonoBehaviour, IDamageable
             _deadHitTime += Time.deltaTime;
             if (_deadTime <= _deadHitTime)
             {
-                EnemyManager.Instance.ReturnEnemy(gameObject);
+                EnemyManager.Instance.ReturnEnemy( gameObject );
             }
         }
         else if (_currState == State.Idle)

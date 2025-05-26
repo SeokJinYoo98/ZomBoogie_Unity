@@ -6,6 +6,7 @@ using System.Numerics;
 public class BoogieStatus
 {
     public int CurrXp;
+    public int MaxXp;
     public int CurrHp;
     public int MaxHp;
     public int Attack;
@@ -15,6 +16,17 @@ public class BoogieStatus
     public float ItemRange;
     public float BulletSpeed;
     public float MagTime;
+
+    public void IncreaseXp(int xp)
+    {
+        CurrXp += xp;
+        if (MaxXp <= CurrXp)
+        {
+            CurrXp = 0;
+            ++MaxXp;
+            LevelManager.Instance.PlayerLevelUp( );
+        }
+    }
 }
 public class BaseStates
 {

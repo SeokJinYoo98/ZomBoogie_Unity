@@ -7,7 +7,7 @@ public abstract class BaseItem : MonoBehaviour
     [SerializeField] private ItemType       _type;
     [SerializeField] private string         _sfxName;
     private                  Rigidbody2D    _rb;
-    private                  float          _moveSpeed = 3.0f;
+    private                  float          _moveSpeed = 5.0f;
    
     private void Awake()
     {

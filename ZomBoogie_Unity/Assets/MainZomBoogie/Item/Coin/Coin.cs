@@ -4,6 +4,6 @@ public class Coin : BaseItem
 {
     protected override void SpecialFunc(BoogieStatus target)
     {
-        ++target.CurrXp;
+        target.IncreaseXp( 1 );
     }
 }

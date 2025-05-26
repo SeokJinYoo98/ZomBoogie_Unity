@@ -17,7 +17,7 @@ public abstract class BaseEnemy : MonoBehaviour, IDamageable
     protected int                 _animIndex;
 
     private     State               _currState;
-    private     float                 _currFrameTime = 0.0f;
+    private     float               _currFrameTime = 0.0f;
    
     private     Transform           _target;
     private     float               _deadHitTime = 0.0f;
@@ -42,7 +42,7 @@ public abstract class BaseEnemy : MonoBehaviour, IDamageable
     }
     protected void Update()
     {
-        if (!_data) return;
+        if (!_data || Time.timeScale <= 0.1f) return;
         UpdateState( );
         UpdateAnimation( );
         CoolTime( );
@@ -199,4 +199,5 @@ public abstract class BaseEnemy : MonoBehaviour, IDamageable
     {
 
     }
+    public (int currHp, int maxHp) GetHp() => (_hp, _data.EnemyStats.hp);
 }

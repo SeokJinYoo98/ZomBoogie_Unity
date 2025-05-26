@@ -40,6 +40,7 @@ public class Boogie : MonoBehaviour, IDamageable
     // Update is called once per frame
     void Update()
     {
+        if (Time.timeScale <= 0.1f) return;
         CoolTime( );
         InputProcess();
         StateProcess(Camera.main.ScreenToWorldPoint(Input.mousePosition));
@@ -59,7 +60,7 @@ public class Boogie : MonoBehaviour, IDamageable
         if (Input.GetKey(KeyCode.W))        _moveDir += Vector2.up;
         if (Input.GetMouseButtonDown( 0 ))  Attack( );
         if (Input.GetMouseButtonDown(1))    EnemyManager.Instance.SpawnEnemy();
-        
+        if (Input.GetKey( KeyCode.L )) _status.IncreaseXp( _status.MaxXp );
     }
     private void AnimateProcess()
     {
@@ -141,4 +142,19 @@ public class Boogie : MonoBehaviour, IDamageable
         }
     }
 
+    public (int currHp, int maxHp) GetHp() => (_status.CurrHp, _status.MaxHp);
+    public (int currXp, int maxXP) GetXp() => (_status.CurrXp, _status.MaxXp);
+
+
+}
+
+public class LevelInfo
+{
+    BoogieStatus _playerStatus;
+    int _hpLevel;
+    int _speedLevel;
+    public LevelInfo(BoogieStatus status)
+    {
+
+    }
 }

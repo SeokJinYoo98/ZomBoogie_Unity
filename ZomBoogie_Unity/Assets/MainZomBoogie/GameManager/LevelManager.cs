@@ -45,17 +45,18 @@ public class LevelManager : MonoBehaviour
     }
     public void PlayerLevelUp()
     {
-        AudioManager.Instance.PlaySfx( "LevelUp" );
-        _panel.SetActive(true);
         PauseGame( );
         _onLevelUp.Invoke();
     }
     public void PauseGame()
     {
+        AudioManager.Instance.PlaySfx( "LevelUp" );
+        _panel.SetActive( true );
         Time.timeScale = 0.0f;
     }
     public void Resume()
     {
+        _panel.SetActive( false );
         Time.timeScale = 1.0f;
     }
 

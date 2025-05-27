@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using AbilitySystem.Data;
 
-public class BaseCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class BaseCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     [Header("Card Components")]
     [SerializeField] private Sprite[]               _cards;
@@ -40,5 +40,19 @@ public class BaseCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public void OnPointerExit(PointerEventData eventData)
     {
         _cardImage.sprite = _cards[0];
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        LevelManager.Instance.Resume( );
+        CardSpawner spawner = GetComponentInParent<CardSpawner>();
+        if (spawner != null)
+        {
+            spawner.DestroyAllCard( );
+        }
+        else
+        {
+            Debug.LogWarning( "[BaseCard] CardSpawner를 부모 계층에서 찾을 수 없습니다." );
+        }
     }
 }

@@ -31,6 +31,13 @@ public class CardSpawner : MonoBehaviour
         var cardObj = Instantiate( _cardPrefab, transform );
         var baseCard = cardObj.GetComponent<BaseCard>();
         baseCard.Init( abilityData );
+    }
 
+    public void DestroyAllCard()
+    {
+        foreach (Transform child in transform)
+        {
+            Destroy( child.gameObject );
+        }
     }
 }

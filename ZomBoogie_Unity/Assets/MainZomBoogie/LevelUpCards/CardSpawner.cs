@@ -1,17 +1,13 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
-
+using AbilitySystem.Runtime;
 public class CardSpawner : MonoBehaviour
 {
     [SerializeField] private Object _cardPrefab;
 
     private UnityAction _onLevelUp;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private void Awake()
-    {
-        
-    }
+
     private void Start()
     {
         _onLevelUp = OnLevelUp;
@@ -31,9 +27,10 @@ public class CardSpawner : MonoBehaviour
     private void SpawnCard()
     {
         Debug.Log( "카드 스폰" );
-        IAbility ability = new SpeedAbility();
+        var abilityData = AbilityDataPool.Instance.Get( "ablility_passive_speedup" );
         var cardObj = Instantiate( _cardPrefab, transform );
         var baseCard = cardObj.GetComponent<BaseCard>();
-        baseCard.Init(ability);
+        baseCard.Init( abilityData );
+
     }
 }

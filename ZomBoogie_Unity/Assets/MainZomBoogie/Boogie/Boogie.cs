@@ -1,3 +1,4 @@
+using AbilitySystem.Core;
 using System.Collections;
 using Unity.IO.LowLevel.Unsafe;
 using Unity.VisualScripting;
@@ -8,12 +9,13 @@ using UnityEngine.InputSystem;
 // gameObject는 현재 스크립트가 붙어 있는 오브젝트 그 자체를 가리키는 참조
 public class Boogie : MonoBehaviour, IDamageable
 {
-    [SerializeField] private BoogieStatus   _status;
-    [SerializeField] private Weapon         _gun;
+    [SerializeField] private BoogieStatus       _status;
+    [SerializeField] private Weapon             _gun;
+
     private Animator       _anim;
     private Rigidbody2D    _rb;
     private SpriteRenderer _sr;
-   
+    
     private Vector2                         _moveDir = Vector2.zero;
     private BaseStates                      _state;
     private float _coolTime;
@@ -144,16 +146,7 @@ public class Boogie : MonoBehaviour, IDamageable
 
     public (int currHp, int maxHp) GetHp() => (_status.CurrHp, _status.MaxHp);
     public (int currXp, int maxXP) GetXp() => (_status.CurrXp, _status.MaxXp);
-
-
-}
-
-public class LevelInfo
-{
-    BoogieStatus _playerStatus;
-    int _hpLevel;
-    int _speedLevel;
-    public LevelInfo(BoogieStatus status)
+    public void OnCardSelected(IAbility ability)
     {
 
     }

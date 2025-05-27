@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using AbilitySystem.Data;
 
 public class BaseCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
@@ -11,11 +12,11 @@ public class BaseCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     [SerializeField] private TMPro.TextMeshProUGUI  _nameText;
     [SerializeField] private TMPro.TextMeshProUGUI  _descriptionText;
     private Image                                   _cardImage;
-    public void Init(IAbility ability)
+    public void Init(AbilityData data)
     {
-        _iconImage.sprite       = ability.AbilityIcon;
-        _nameText.text          = ability.Name;
-        _descriptionText.text   = ability.Description;
+        _iconImage.sprite       = data.Icon;
+        _nameText.text          = data.Name;
+        _descriptionText.text   = data.Description;
     }
     private void Awake()
     {

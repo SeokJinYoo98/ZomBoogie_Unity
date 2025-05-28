@@ -2,62 +2,46 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+using StatSystem.Core;
+using StatSystem.Runtime;
 enum ProgressType { Hp, Xp };
 public class ProgressBar : MonoBehaviour
 {
-    [SerializeField] private GameObject         _target;
+    [SerializeField] private string             _statId;
     [SerializeField] private Scrollbar          _bar;
-    [SerializeField] private ProgressType       _progressType;
     [SerializeField] private TextMeshProUGUI    _valueText;
 
-    int     _currValue = 0;
-    int     _maxValue = 0;
+    private bool    _animate        = false;
+    private float   _currPercent    = 0.0f;
+    private float   _newPercent     = 0.0f;
+    private float   _animationSpeed = 0.5f;
     void Start()
     {
+        var boogie = FindFirstObjectByType<Boogie>();
+        var stat = boogie.GetComponent<StatsComponent>( ).GetStat( _statId );
+
+        stat.OnValueChanged += UpdateUI;
+        UpdateUI( 0, stat.Value, stat.MaxValue );
     }
-
-    void Update()
+    private void Update()
     {
-        switch (_progressType)
-        {
-            case ProgressType.Hp: UpdateHp( ); break;
-            case ProgressType.Xp: UpdateXp( ); break;
-        }
+        if (_animate) BarAnimation( );
     }
-    private void UpdateHp()
+    private void UpdateUI(StatChangeType type, float current, float max)
     {
-        if (!_target.TryGetComponent<IDamageable>( out var dmg )) return;
-        var (curr, max) = dmg.GetHp( );
-        if (curr == _currValue && max == _maxValue) return;
-
-        _currValue = curr;
-        _maxValue = max;
-        float percent = CalcPercent(curr, max);
-
-        _bar.numberOfSteps = _maxValue;
-        _bar.size = percent;
-
-        _valueText.text = $"{curr}";
+        Debug.Log( "이벤트 발생" );
+        Debug.Log( "Current: " + current + ", Max: " + max );
+        _newPercent = Mathf.Clamp01( current / max );
+        _bar.numberOfSteps  = (int)max;
+        _animate = true;
     }
-    private void UpdateXp()
+    private void BarAnimation()
     {
-        if (!_target.TryGetComponent<Boogie>( out var bg )) return;
-        var (curr, max) = bg.GetXp( );
-        if (curr == _currValue && max == _maxValue) return;
+        _currPercent = Mathf.MoveTowards( _currPercent, _newPercent, _animationSpeed * Time.deltaTime );
 
-        _currValue = curr;
-        _maxValue = max;
-        float percent = CalcPercent(curr, max);
+        if (Mathf.Approximately( _currPercent, _newPercent ))
+            _animate = false;
 
-        _bar.numberOfSteps = _maxValue;
-        _bar.size = percent;
-
-        _valueText.text = $"{curr} / {max}";
-    }
-    private float CalcPercent(int now, int max)
-    {
-        if (now <= 0 || max <= 0)
-            return 0.0f;
-        return Mathf.Clamp01( (float)now / max );
+        _bar.size = _currPercent;
     }
 }

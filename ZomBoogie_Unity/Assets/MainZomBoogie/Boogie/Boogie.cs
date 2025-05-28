@@ -1,4 +1,5 @@
 using AbilitySystem.Core;
+using StatSystem.Runtime;
 using System.Collections;
 using Unity.IO.LowLevel.Unsafe;
 using Unity.VisualScripting;
@@ -20,9 +21,13 @@ public class Boogie : MonoBehaviour, IDamageable
     private BaseStates                      _state;
     private float _coolTime;
     private CircleCollider2D _itemColl;
+
+    // 리팩토링 코드
+    private StatsComponent _stats;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
+        _stats = GetComponent<StatsComponent>();
         _anim = GetComponent<Animator>( );
         _sr = GetComponent<SpriteRenderer>( );
         _rb = GetComponent<Rigidbody2D>( );
@@ -99,6 +104,7 @@ public class Boogie : MonoBehaviour, IDamageable
     public bool TakeDamage(int damage)
     {
         AudioManager.Instance.PlaySfx( "PlayerHit" );
+        _stats.GetStat( "stat_base_hp" ).DecreaseStat( damage );
         _status.CurrHp -= damage;
         return true;
     }

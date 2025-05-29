@@ -9,10 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a47682f7fe9f5041a6ad186eeac4e3d, type: 3}
-  m_Name: Booige_BaseSpeed
+  m_Script: {fileID: 11500000, guid: 58f3e79aa9739024a90af4214edbcae4, type: 3}
+  m_Name: Gun
   m_EditorClassIdentifier: 
-  _id: stat_base_speed
-  _statName: Speed
-  _baseValue: 2
-  _zeroStart: 0
+  _sprite: {fileID: 6879118450950661895, guid: 31ba46de13706ea40bdb61b0dcf767b8, type: 3}
+  _id: weapon_ranged_gun
+  _name: Boogie_Gun

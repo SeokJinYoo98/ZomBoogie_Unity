@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de1ea99f6f4a6df47b7ad3e714411e34, type: 3}
+  m_Name: Boogie_Dead
+  m_EditorClassIdentifier: 
+  _animationName: Dead
+  _frames:
+  - {fileID: 6406260752662751718, guid: e14bc3b0019f85047b4e98d370c5bb3b, type: 3}
+  - {fileID: -2914656366768647240, guid: e14bc3b0019f85047b4e98d370c5bb3b, type: 3}
+  _frameRate: 2
+  _loop: 1

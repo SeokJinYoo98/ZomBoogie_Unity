@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a47682f7fe9f5041a6ad186eeac4e3d, type: 3}
   m_Name: Boogie_BaseHp
   m_EditorClassIdentifier: 
-  _id: stat_hp
+  _id: stat_base_hp
   _statName: Hp
   _baseValue: 3
+  _zeroStart: 0

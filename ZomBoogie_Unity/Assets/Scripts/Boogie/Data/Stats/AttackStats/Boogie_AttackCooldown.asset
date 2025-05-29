@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: stat_attack_cooldown
   _statName: AttackCooldown
-  _baseValue: 3
-  _zeroStart: 0
+  _baseValue: 1
+  _zeroStart: 1

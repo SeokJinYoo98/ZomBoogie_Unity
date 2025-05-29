@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: stat_bullet_speed
   _statName: BulletSpeed
-  _baseValue: 3
+  _baseValue: 10
   _zeroStart: 0

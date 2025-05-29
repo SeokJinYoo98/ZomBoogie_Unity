@@ -4,7 +4,7 @@ namespace StatSystem.Core
 {
     public interface IStat
     {
-        // id, eventType, currValue, maxValue
+        // eventType, currValue, maxValue
         event Action< StatChangeType, float, float> OnValueChanged;
         string Id { get; }
         string Name { get; }

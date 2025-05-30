@@ -7,8 +7,9 @@ public class AnimComponent : MonoBehaviour
 {
     [SerializeField] private NewAnimationData[]     _datas;
 
-    private SpriteRenderer _spriteRenderer;
-    private Dictionary<string, NewAnimationData>    _dataMap;
+    private SpriteRenderer  _spriteRenderer;
+    private Rigidbody2D     _rb2d;
+    private Dictionary<string, NewAnimationData> _dataMap;
 
     private NewAnimationData _currAnim;
     private string           _currName;
@@ -17,24 +18,26 @@ public class AnimComponent : MonoBehaviour
     private float            _frameTime;
     private bool             _isReverse = false;
 
-    void Start()
+    void Awake()
     {
         if (_datas == null || _datas.Length == 0)
-            throw new System.Exception( "애니메이션 데이터가 없습니다" );
+            throw new System.Exception("애니메이션 데이터가 없습니다");
 
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        if (!_spriteRenderer ) throw new System.Exception( "sr이 없어요" );
+        if (!_spriteRenderer) throw new System.Exception("sr이 없어요");
 
         _dataMap = new Dictionary<string, NewAnimationData>();
-        foreach(var data in _datas)
+        foreach (var data in _datas)
         {
             if (data == null) continue;
             string key = data.AnimationName;
-            if (string.IsNullOrEmpty( key ) )   continue;
-            if (_dataMap.ContainsKey( key ))    continue;
+            if (string.IsNullOrEmpty(key)) continue;
+            if (_dataMap.ContainsKey(key)) continue;
             _dataMap[key] = data;
         }
-        EnterAnimation( "Walk" );
+        EnterAnimation("Walk");
+        
+        _rb2d = GetComponent<Rigidbody2D>();
     }
 
     void Update()
@@ -42,16 +45,16 @@ public class AnimComponent : MonoBehaviour
         PlayAnimation(Time.deltaTime);
     }
 
-    public void SetReverse(float dirX)
+    public void SetReverse(bool flipX)
     {
-        if (_spriteRenderer.flipX)
+        if (flipX)
         {
-            if (dirX <= 0.0f) _isReverse = false;
+            if (_rb2d.linearVelocityX <= 0.0f) _isReverse = false;
             else _isReverse = true;
         }
         else
         {
-            if (dirX <= 0.0f) _isReverse = true;
+            if (_rb2d.linearVelocityX <= 0.0f) _isReverse = true;
             else _isReverse = false;
         }
     }
@@ -59,7 +62,7 @@ public class AnimComponent : MonoBehaviour
     {
         if (_currName == name || !_dataMap.ContainsKey(name))
             return;
-        Debug.Log(name);
+
         _currName = name;
         _currAnim = _dataMap[name];
 

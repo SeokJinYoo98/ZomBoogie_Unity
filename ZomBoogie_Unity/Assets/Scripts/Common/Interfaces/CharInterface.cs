@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Common.CharInterface
@@ -16,7 +17,15 @@ namespace Common.CharInterface
     }
     public interface IFlipAble
     {
-        void FlipX(bool flip);
-        void FlipY(bool flip);
+        void FlipX(float targetX);
     }
+        public interface IControllAble
+    {
+        bool IsDeath();
+        void Move(Vector2 dir);
+        void Attack();
+        void LookAt(Vector2 pos);
+    }
+
+
 }

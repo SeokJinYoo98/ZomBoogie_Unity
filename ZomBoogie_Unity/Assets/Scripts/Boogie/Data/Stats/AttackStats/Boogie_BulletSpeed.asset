@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a47682f7fe9f5041a6ad186eeac4e3d, type: 3}
   m_Name: Boogie_BulletSpeed
   m_EditorClassIdentifier: 
-  _id: stat_bullet_speed
+  _id: stat_attack_speed
   _statName: BulletSpeed
+  _statType: 1
   _baseValue: 10
   _zeroStart: 0

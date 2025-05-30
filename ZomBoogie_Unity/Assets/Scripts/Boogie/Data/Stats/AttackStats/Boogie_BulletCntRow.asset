@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6a47682f7fe9f5041a6ad186eeac4e3d, type: 3}
-  m_Name: Boogie_AttackCooldown
+  m_Name: Boogie_BulletCntRow
   m_EditorClassIdentifier: 
-  _id: stat_attack_cooldown
-  _statName: AttackCooldown
+  _id: stat_attack_cntrow
+  _statName: BulletCntRow
   _statType: 1
   _baseValue: 1
   _zeroStart: 0

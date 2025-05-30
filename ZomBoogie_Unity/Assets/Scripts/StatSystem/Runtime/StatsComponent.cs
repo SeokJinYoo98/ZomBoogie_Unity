@@ -13,7 +13,7 @@ namespace StatSystem.Runtime
         [SerializeField] private StatData[] _statDatas;
 
 
-        private Dictionary<string, IStat> _stats;
+        private Dictionary<string, IStat> _stats = new();
 
         private void Awake()
         {
@@ -21,10 +21,14 @@ namespace StatSystem.Runtime
                 .Select(d => (IStat)new StatBase(d))
                 .ToDictionary(s => s.Id, s => s);
         }
-
         public IStat GetStat(string id) => _stats.TryGetValue(id, out var stat) ? stat : null;
         public float GetStatValue(string id) => _stats.TryGetValue(id, out var stat) ? stat.Value : 0f;
         public bool IsDeath() => _stats["stat_base_hp"].Value <= 0.0f;
+
+        public Dictionary<string, IStat> GetStatDatas()
+        {
+            return _stats;
+        } 
     }
 }
 

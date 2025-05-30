@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: stat_attack_rate
   _statName: AttackRate
+  _statType: 1
   _baseValue: 1
   _zeroStart: 0

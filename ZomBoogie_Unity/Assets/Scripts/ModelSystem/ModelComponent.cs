@@ -1,26 +1,34 @@
+using System;
 using UnityEngine;
-using Common.Interface;
-[RequireComponent( typeof( SpriteRenderer ) )]
+
+[RequireComponent(typeof(SpriteRenderer))]
 public class ModelComponent : MonoBehaviour
 {
+    private event Action<bool> OnFlipped;
     private SpriteRenderer _spriteRenderer;
-
-    public void FlipX(bool flip) => _spriteRenderer.flipX = flip;
-    public void FlipY(bool flip) => _spriteRenderer.flipY = flip;
-    public bool Flip() => _spriteRenderer.flipX;
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
     }
-    private void LateUpdate()
+
+    public void FlipX(float mouseX)
     {
-        
+        bool isFlip = mouseX < transform.position.x;
+        if (isFlip == _spriteRenderer.flipX)
+            return;
+        _spriteRenderer.flipX = isFlip;
+        OnFlipped.Invoke(isFlip);
     }
-    // Update is called once per frame
-    void Update()
+    public void FlipY(bool flip) => _spriteRenderer.flipY = flip;
+    public bool Flip() => _spriteRenderer.flipX;
+    public void SubscribeFlipEvent(Action<bool> handler)
     {
-        
+        OnFlipped += handler;
     }
+    public void UnsubscribeFlipEvent(Action<bool> handler)
+    {
+        OnFlipped -= handler;
+    }
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
 }

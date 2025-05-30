@@ -1,18 +1,19 @@
-using Common.Interface;
 using System;
-using System.Collections.Generic;
-using WeaponSystem.Data;
-
+using UnityEngine;
+using StatSystem.Runtime;
+using Common.CharInterface;
 namespace WeaponSystem.Core
 {
     public interface IWeapon
     {
-        string  Id { get; }
-        float   Damage { get; }
-        float   Range { get; }
+        string Id { get; }
+        string Name { get; }
+        Sprite Icon { get; }
 
-        void Fire();
-        bool CanFire();
+        void InitBoogieStats(StatsComponent targetStats);
+        void Attack();
+        void LookAt(Vector2 pos);
+        void FlipX(bool flipX);
     }
 }
 

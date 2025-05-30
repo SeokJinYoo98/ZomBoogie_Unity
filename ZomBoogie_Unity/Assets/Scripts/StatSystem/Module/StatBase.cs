@@ -16,7 +16,7 @@ namespace StatSystem.Module
         private float           _value;
         private float           _maxValue;
         readonly private float  _baseValue;
-
+        public StatType Type            => _data.StatType;
         public string   Name            => _data.Name;
         public string   Id              => _data.Id;
         public float    BaseValue       => _baseValue;
